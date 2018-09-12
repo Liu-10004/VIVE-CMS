@@ -180,3 +180,12 @@ const reg = /(((^https?:(?:\/\/)?)(?:[-;:&=\+\$,\w]+@)?[A-Za-z0-9.-]+(?::\d+)?|(
 export function isUrl(path) {
   return reg.test(path);
 }
+
+export function validateTagLength(tags, maxLength) {
+  return tags.every(tag => tag.length <= maxLength);
+}
+
+export function validateThumbnails(files, requireFilesLength, limitSize) {
+  const isLimitSize = files.every(file => file.size < limitSize);
+  return files.length === requireFilesLength && isLimitSize;
+}

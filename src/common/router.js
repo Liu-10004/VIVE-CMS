@@ -74,8 +74,20 @@ export const getRouterData = app => {
     '/': {
       component: dynamicWrapper(app, ['user', 'login'], () => import('../layouts/BasicLayout')),
     },
-    '/dashboard/monitor': {
-      component: dynamicWrapper(app, ['monitor'], () => import('../routes/Dashboard/Monitor')),
+    '/resources/upload-courseware': {
+      component: dynamicWrapper(app, ['courseware'], () =>
+        import('../routes/Resources/UploadCourseware')
+      ),
+    },
+    '/resources/upload-courseware/step1': {
+      component: dynamicWrapper(app, ['courseware'], () =>
+        import('../routes/Resources/UploadCourseware/Step1')
+      ),
+    },
+    '/resources/upload-courseware/step2': {
+      component: dynamicWrapper(app, ['courseware'], () =>
+        import('../routes/Resources/UploadCourseware/Step2')
+      ),
     },
     '/user': {
       component: dynamicWrapper(app, [], () => import('../layouts/UserLayout')),
