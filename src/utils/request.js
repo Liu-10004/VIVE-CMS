@@ -31,6 +31,7 @@ function checkStatus(response) {
   });
   const error = new Error(errortext);
   error.name = response.status;
+  error.message = errortext;
   error.response = response;
   throw error;
 }
@@ -71,30 +72,33 @@ export default function request(url, options) {
   return fetch(url, newOptions)
     .then(checkStatus)
     .then(response => {
-      if (newOptions.method === 'DELETE' || response.status === 204) {
-        return response.text();
-      }
+      // if (newOptions.method === 'DELETE' || response.status === 204) {
+      //   return response.text();
+      // }
       return response.json();
     })
     .catch(e => {
       const { dispatch } = store;
       const status = e.name;
+      const response = { status, message: e.message };
+
       if (status === 401) {
         dispatch({
           type: 'login/logout',
         });
-        return;
+        return response;
       }
       if (status === 403) {
         dispatch(routerRedux.push('/exception/403'));
-        return;
+        return response;
       }
       if (status <= 504 && status >= 500) {
         dispatch(routerRedux.push('/exception/500'));
-        return;
+        return response;
       }
       if (status >= 404 && status < 422) {
         dispatch(routerRedux.push('/exception/404'));
+        return response;
       }
     });
 }
