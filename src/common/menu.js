@@ -2,13 +2,13 @@ import { isUrl } from '../utils/utils';
 
 const menuData = [
   {
-    name: 'dashboard',
-    icon: 'dashboard',
-    path: 'dashboard',
+    name: '内容云素材管理',
+    icon: 'table',
+    path: 'resources',
     children: [
       {
-        name: '监控页',
-        path: 'monitor',
+        name: '上传课件',
+        path: 'upload-courseware',
       },
     ],
   },

@@ -44,6 +44,30 @@ const proxy = {
     },
   ],
   'GET /api/activities': getActivities,
+  'POST /api/coursewares': (req, res) => {
+    res.send({
+      message: 'success',
+      data: '4028efe665d5dcbf0165d5dd389a0006',
+    });
+  },
+  'PUT /api/coursewares/:id': (req, res) => {
+    res.send({ message: 'success' });
+  },
+  'GET /api/token': (req, res) => {
+    res.send({
+      message: 'success',
+      data: {
+        securityToken:
+          'CAIS3QJ1q6Ft5B2yfSjIr4mAOf/cj6ts0feqZmXBi3E/eN17lf3A1Dz2IHhPe3VgBOAYvvU1nW9S6P8clr1tSoFISVGBNJYrsckOq1/6ONea45QNKje0P9n3d1KIAjvXgeUiCoeQFaEnE5XAQlTAkTAJjtmeXD6+XlujHISUgJp8FLo+VRW5ajw0Y7UzIRB5+vcHKVzbN/umLmTi4AzqAVFvpxB3hE5m9K272bf80BfFi0DgweJni+bbK5O/Pc53J8U9AZXnwu1oe6bclSVU7AVGsb9rhqhF8nCb5ovNDldcvUvbP7fY+ddhdFYnO6RnF6If/Kn1zaUg5KuRtfyukEkQZ74MCH6BGNHxnZKcIo7zaIZlL4ScEm/Wz9WCOqPytw4Zen8BPGtIAYF5cSAsWUF8FGGLcPb4og6TPB3QQqyEwbww1oFu01Lr8NyFKl6CWbyF1jwCPZsxf53F1IGqbLyLGoABIg7l2krn70I/c42ttOSQOwodMWtdbz4Ql5nmQRmlDPu/u94oB280xgCEZkHeT0dTCkRSqG150DYCoAPfAcK4japyeXH196FnO3BMlyS9nRskSkKqu2I5Q7pkwpyThCN5/6YqY5ZIF58vvlxR/dZ++yYybkRgBzrgdZT+rZhISWw=',
+        accessKeySecret: 'CgnG3paESL2V5FJB4vVspqHp9Zt9bxqmTerdatDjjxnE',
+        accessKeyId: 'STS.NJ5rEhbtMf5AdCpoqjtRWz8k6',
+        expiration: '2018-09-21T07:47:14Z',
+        bucket: 'vivedu-cloud-public',
+        key: '4028efe665d5dcbf0165d5dd389a0006/',
+        region: 'oss-cn-beijing',
+      },
+    });
+  },
   'POST /api/login/account': (req, res) => {
     const { password, userName, type } = req.body;
     if (password === '888888' && userName === 'admin') {
