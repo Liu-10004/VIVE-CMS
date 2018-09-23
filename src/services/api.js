@@ -35,9 +35,52 @@ export async function addCourseware(params) {
   });
 }
 
-export async function updateCourseware(params) {
-  return request(`/api/coursewares/${params.id}`, {
+export async function queryResourceStatus(params) {
+  const query = params ? `?${stringify(params)}` : '';
+
+  return request(`/api/resources/status${query}`);
+}
+
+export async function queryMaterials(params) {
+  return request(`/api/materials?${stringify(params)}`);
+}
+
+export async function queryCoursewares(params) {
+  return request(`/api/coursewares?${stringify(params)}`);
+}
+
+export async function updateMaterial({ id, ...rest }) {
+  return request(`/api/materials/${id}?${stringify(rest)}`, {
+    headers: {
+      'Content-Type': 'application/x-www-form-urlencoded',
+    },
     method: 'PUT',
-    body: params,
+  });
+}
+
+export async function updateCourseware({ id, ...rest }) {
+  return request(`/api/coursewares/${id}?${stringify(rest)}`, {
+    headers: {
+      'Content-Type': 'application/x-www-form-urlencoded',
+    },
+    method: 'PUT',
+  });
+}
+
+export async function deleteMaterial({ id }) {
+  return request(`/api/materials/${id}`, {
+    headers: {
+      'Content-Type': 'application/x-www-form-urlencoded',
+    },
+    method: 'DELETE',
+  });
+}
+
+export async function deleteCourseware({ id }) {
+  return request(`/api/coursewares/${id}`, {
+    headers: {
+      'Content-Type': 'application/x-www-form-urlencoded',
+    },
+    method: 'DELETE',
   });
 }

@@ -1,4 +1,5 @@
 import { getActivities } from './mock/api';
+import { getStatus, getResources } from './mock/resources';
 import { format, delay } from 'roadhog-api-doc';
 
 // 是否禁用代理
@@ -68,6 +69,9 @@ const proxy = {
       },
     });
   },
+  'GET /api/resources/status': getStatus,
+  'GET /api/materials': getResources,
+  'GET /api/coursewares': getResources,
   'POST /api/login/account': (req, res) => {
     const { password, userName, type } = req.body;
     if (password === '888888' && userName === 'admin') {

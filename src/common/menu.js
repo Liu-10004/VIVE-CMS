@@ -7,6 +7,15 @@ const menuData = [
     path: 'resources',
     children: [
       {
+        name: '全部素材',
+        path: 'all',
+        authority: 'admin',
+      },
+      {
+        name: '我的素材',
+        path: 'mine',
+      },
+      {
         name: '上传课件',
         path: 'upload-courseware',
       },
