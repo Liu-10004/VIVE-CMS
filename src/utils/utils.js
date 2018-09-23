@@ -189,3 +189,25 @@ export function validateThumbnails(files, requireFilesLength, limitSize) {
   const isLimitSize = files.every(file => file.size < limitSize);
   return files.length === requireFilesLength && isLimitSize;
 }
+
+export function getRoutePath(basePath, currentPath) {
+  let nextPath;
+
+  if (currentPath === 'passing' || currentPath === 'unpassed') {
+    nextPath = `${currentPath}/model`;
+  } else {
+    nextPath = `${currentPath}/courseware`;
+  }
+
+  return `${basePath}/${nextPath}`;
+}
+
+export function parsePath(pathname) {
+  const paths = pathname.split('/'); // 切割 pathname
+
+  return {
+    isAdmin: paths.indexOf('mine') === -1, // 路由是否指向「全部素材」
+    status: paths.slice(-2)[0], // 当前 tab, 即资源的状态
+    type: paths.slice(-1)[0], // 资源的类型
+  };
+}
