@@ -50,20 +50,16 @@ export async function queryCoursewares(params) {
 }
 
 export async function updateMaterial({ id, ...rest }) {
-  return request(`/api/materials/${id}?${stringify(rest)}`, {
-    headers: {
-      'Content-Type': 'application/x-www-form-urlencoded',
-    },
+  return request(`/api/materials/${id}`, {
     method: 'PUT',
+    body: rest,
   });
 }
 
 export async function updateCourseware({ id, ...rest }) {
-  return request(`/api/coursewares/${id}?${stringify(rest)}`, {
-    headers: {
-      'Content-Type': 'application/x-www-form-urlencoded',
-    },
+  return request(`/api/coursewares/${id}`, {
     method: 'PUT',
+    body: rest,
   });
 }
 
@@ -82,5 +78,12 @@ export async function deleteCourseware({ id }) {
       'Content-Type': 'application/x-www-form-urlencoded',
     },
     method: 'DELETE',
+  });
+}
+
+export async function addMaterial(params) {
+  return request('/api/materials', {
+    method: 'POST',
+    body: params,
   });
 }
