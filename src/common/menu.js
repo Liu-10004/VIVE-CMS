@@ -19,6 +19,10 @@ const menuData = [
         name: '上传课件',
         path: 'upload-courseware',
       },
+      {
+        name: '上传模型',
+        path: 'upload-model',
+      },
     ],
   },
   {

@@ -105,6 +105,27 @@ export const getRouterData = app => {
         import('../routes/Resources/UploadCourseware/Step2')
       ),
     },
+    '/resources/upload-model': {
+      component: dynamicWrapper(app, ['material'], () => import('../routes/Resources/UploadModel')),
+    },
+    '/resources/upload-model/step1': {
+      name: '上传模型和缩略图',
+      component: dynamicWrapper(app, ['material', 'courseware'], () =>
+        import('../routes/Resources/UploadModel/Step1')
+      ),
+    },
+    '/resources/upload-model/step2': {
+      name: '填写模型信息',
+      component: dynamicWrapper(app, ['material'], () =>
+        import('../routes/Resources/UploadModel/Step2')
+      ),
+    },
+    '/resources/upload-model/result': {
+      name: '上传成功，等待审核',
+      component: dynamicWrapper(app, ['material'], () =>
+        import('../routes/Resources/UploadModel/Step3')
+      ),
+    },
     '/user': {
       component: dynamicWrapper(app, [], () => import('../layouts/UserLayout')),
     },

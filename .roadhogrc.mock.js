@@ -54,6 +54,9 @@ const proxy = {
   'PUT /api/coursewares/:id': (req, res) => {
     res.send({ message: 'success' });
   },
+  'PUT /api/materials/:id': (req, res) => {
+    res.send({ message: 'success' });
+  },
   'GET /api/token': (req, res) => {
     res.send({
       message: 'success',
@@ -72,6 +75,12 @@ const proxy = {
   'GET /api/resources/status': getStatus,
   'GET /api/materials': getResources,
   'GET /api/coursewares': getResources,
+  'POST /api/materials': (req, res) => {
+    res.send({
+      message: 'success',
+      data: '4028efe965cc80940165cc80e03e0000',
+    });
+  },
   'POST /api/login/account': (req, res) => {
     const { password, userName, type } = req.body;
     if (password === '888888' && userName === 'admin') {

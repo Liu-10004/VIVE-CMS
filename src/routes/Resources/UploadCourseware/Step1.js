@@ -4,7 +4,7 @@ import { routerRedux } from 'dva/router';
 import { Form, Input, Button, Icon, Card, Cascader, Upload, Select, message } from 'antd';
 import PageHeaderLayout from 'layouts/PageHeaderLayout';
 import { validateTagLength, validateThumbnails } from 'utils/utils';
-import courses from 'enums/courses';
+import { coursewares } from 'enums/ResourceOptions';
 
 const FormItem = Form.Item;
 const { TextArea } = Input;
@@ -148,7 +148,13 @@ export default class Step1 extends PureComponent {
                   },
                 ],
                 initialValue: ['义务教育', '科学', '物质科学'],
-              })(<Cascader options={courses} style={{ width: '100%' }} placeholder="请选择分类" />)}
+              })(
+                <Cascader
+                  options={coursewares}
+                  style={{ width: '100%' }}
+                  placeholder="请选择分类"
+                />
+              )}
             </FormItem>
             <FormItem {...formItemLayout} label="年级 / 专业">
               {getFieldDecorator('label', {
