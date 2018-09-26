@@ -12,8 +12,18 @@ const menuData = [
         authority: 'admin',
       },
       {
+        name: '课件详情',
+        path: 'all/courseware/:id',
+        hideInMenu: true,
+      },
+      {
         name: '我的素材',
         path: 'mine',
+      },
+      {
+        name: '课件详情',
+        path: 'mine/courseware/:id',
+        hideInMenu: true,
       },
       {
         name: '上传课件',

@@ -85,6 +85,11 @@ export const getRouterData = app => {
     '/resources/all': {
       component: dynamicWrapper(app, ['resource'], () => import('../routes/Resources/Overview')),
     },
+    '/resources/all/material/:id': {
+      component: dynamicWrapper(app, ['material'], () =>
+        import('../routes/Resources/Details/Material')
+      ),
+    },
     '/resources/all/:status/:type': {
       component: dynamicWrapper(app, ['resource', 'material', 'courseware'], () =>
         import('../routes/Resources/Overview/Resources')

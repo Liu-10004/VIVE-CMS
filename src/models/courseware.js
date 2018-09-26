@@ -5,6 +5,7 @@ import {
   updateCourseware,
   deleteCourseware,
   getToken,
+  queryCoursewareDetail,
 } from 'services/api';
 import { upload as uploadResource } from 'utils/aliOSS';
 
@@ -18,6 +19,7 @@ export default {
       size: 20,
       number: 0,
     },
+    detail: null,
   },
 
   effects: {
@@ -103,6 +105,17 @@ export default {
 
       return response;
     },
+
+    *fetchDetail({ payload }, { call, put }) {
+      const response = yield call(queryCoursewareDetail, payload);
+
+      if (response.message === 'success') {
+        yield put({
+          type: 'saveDetail',
+          payload: response.data,
+        });
+      }
+    },
   },
 
   reducers: {
@@ -124,6 +137,10 @@ export default {
           number,
         },
       };
+    },
+
+    saveDetail(state, { payload }) {
+      return { ...state, detail: payload };
     },
   },
 };
