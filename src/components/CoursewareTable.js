@@ -9,6 +9,7 @@ const columns = [
   {
     title: '学科',
     dataIndex: 'category',
+    render: (_, record) => record.category && record.category[1],
   },
   {
     title: '课件名称',
@@ -47,7 +48,12 @@ class CoursewareList extends React.Component {
             {hasSelected ? `已选择了 ${selectedRowKeys.length} 个课件` : ''}
           </span>
         </div>
-        <Table rowSelection={rowSelection} columns={columns} dataSource={data} />
+        <Table
+          rowKey={record => record.id}
+          rowSelection={rowSelection}
+          columns={columns}
+          dataSource={data}
+        />
       </div>
     );
   }
