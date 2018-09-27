@@ -74,18 +74,18 @@ export const getRouterData = app => {
     '/': {
       component: dynamicWrapper(app, ['user', 'login'], () => import('../layouts/BasicLayout')),
     },
-    '/resources/all': {
-      component: dynamicWrapper(app, ['resource'], () => import('../routes/Resources/Overview')),
-    },
-    '/resources/all/:status/:type': {
-      component: dynamicWrapper(app, ['resource', 'material', 'courseware'], () =>
-        import('../routes/Resources/Overview/Resources')
-      ),
-    },
     '/resources/mine': {
       component: dynamicWrapper(app, ['resource'], () => import('../routes/Resources/Overview')),
     },
     '/resources/mine/:status/:type': {
+      component: dynamicWrapper(app, ['resource', 'material', 'courseware'], () =>
+        import('../routes/Resources/Overview/Resources')
+      ),
+    },
+    '/resources/all': {
+      component: dynamicWrapper(app, ['resource'], () => import('../routes/Resources/Overview')),
+    },
+    '/resources/all/:status/:type': {
       component: dynamicWrapper(app, ['resource', 'material', 'courseware'], () =>
         import('../routes/Resources/Overview/Resources')
       ),
