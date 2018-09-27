@@ -1,5 +1,5 @@
 import { getActivities } from './mock/api';
-import { getStatus, getResources } from './mock/resources';
+import { getStatus, getResources, getMaterialDetail, getCoursewareDetail } from './mock/resources';
 import { format, delay } from 'roadhog-api-doc';
 
 // 是否禁用代理
@@ -75,6 +75,8 @@ const proxy = {
   'GET /api/resources/status': getStatus,
   'GET /api/materials': getResources,
   'GET /api/coursewares': getResources,
+  'GET /api/coursewares/:id': getCoursewareDetail,
+  'GET /api/materials/:id': getMaterialDetail,
   'POST /api/materials': (req, res) => {
     res.send({
       message: 'success',

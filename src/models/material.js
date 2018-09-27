@@ -1,11 +1,13 @@
+import { message } from 'antd';
+import { upload as uploadResource, download as downloadModel } from 'utils/aliOSS';
 import {
   queryMaterials,
   addMaterial,
+  queryMaterialDetail,
   updateMaterial,
   deleteMaterial,
   getToken,
 } from 'services/api';
-import { upload as uploadResource } from 'utils/aliOSS';
 
 export default {
   namespace: 'material',
@@ -17,6 +19,7 @@ export default {
       size: 20,
       number: 0,
     },
+    detail: null,
   },
 
   effects: {
@@ -122,6 +125,29 @@ export default {
 
       return response;
     },
+
+    *fetchDetail({ payload }, { call, put }) {
+      const response = yield call(queryMaterialDetail, payload);
+
+      if (response.message === 'success') {
+        yield put({
+          type: 'saveDetail',
+          payload: response.data,
+        });
+      }
+    },
+
+    // 下载模型
+    *download({ payload }, { call }) {
+      const { id, type } = payload;
+      const response = yield call(getToken, { id, tokenType: type });
+
+      if (response.message === 'failed') {
+        message.error(response.message);
+      } else {
+        return downloadModel(response.data);
+      }
+    },
   },
 
   reducers: {
@@ -156,6 +182,10 @@ export default {
         thumbnails,
         files,
       };
+    },
+
+    saveDetail(state, { payload }) {
+      return { ...state, detail: payload };
     },
   },
 };

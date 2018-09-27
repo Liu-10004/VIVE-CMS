@@ -19,6 +19,41 @@ const fakeResource = ({ status }) => ({
   reason: status === 'UNPASSED' ? '描述不对' : undefined,
 });
 
+const fakeMaterialDetail = ({ id }) => ({
+  id,
+  title: '一个素材',
+  type: ['1', '2'][Math.floor(Math.random() * 2)],
+  format: ['fbx', 'abm'][Math.floor(Math.random() * 2)],
+  category: ['category1', 'category2', 'category3'],
+  level: ['1', '2'][Math.floor(Math.random() * 2)],
+  tags: ['tag1', 'tag2', 'tag3'],
+  coursewares: ['语文课', '数学课', '品酒课'],
+  video: '',
+  thumbnails: [
+    'https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png',
+    'https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png',
+    'https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png',
+    'https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png',
+  ],
+});
+
+const fakeCoursewareDetail = ({ id }) => ({
+  id,
+  title: '一个课件',
+  format: ['fbx', 'abm'][Math.floor(Math.random() * 2)],
+  category: ['category1', 'category2', 'category3'],
+  label: ['三年级', '四年级', '五年级'],
+  tags: ['tag1', 'tag2', 'tag3'],
+  summary:
+    '从我国古代的天圆地方到17世纪麦哲伦通过航海证实地球是圆的，再到地球的构成，为什么会出现火山爆发和地震等可怕的自然灾害，这一系列的未知与疑问都可以通过VR来解答，同学们将穿越从古至今的不同场景、体验古人与现代人对地球的认知，全方位了解我们赖以生存的地球——我们的母亲！',
+  thumbnails: [
+    'https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png',
+    'https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png',
+    'https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png',
+    'https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png',
+  ],
+});
+
 const resourceCount = fakeStatus();
 
 const getResources = (req, res, u) => {
@@ -68,4 +103,34 @@ const getStatus = (_, res) => {
   }
 };
 
-export { getStatus, getResources };
+const getMaterialDetail = (req, res) => {
+  const { url } = req;
+
+  const result = {
+    message: 'success',
+    data: fakeMaterialDetail(url.split('/').slice(-1)[0]),
+  };
+
+  if (res && res.json) {
+    res.json(result);
+  } else {
+    return result;
+  }
+};
+
+const getCoursewareDetail = (req, res) => {
+  const { url } = req;
+
+  const result = {
+    message: 'success',
+    data: fakeCoursewareDetail(url.split('/').slice(-1)[0]),
+  };
+
+  if (res && res.json) {
+    res.json(result);
+  } else {
+    return result;
+  }
+};
+
+export { getStatus, getResources, getCoursewareDetail, getMaterialDetail };

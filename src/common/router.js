@@ -77,6 +77,16 @@ export const getRouterData = app => {
     '/resources/mine': {
       component: dynamicWrapper(app, ['resource'], () => import('../routes/Resources/Overview')),
     },
+    '/resources/mine/material/:id': {
+      component: dynamicWrapper(app, ['material'], () =>
+        import('../routes/Resources/Details/Material')
+      ),
+    },
+    '/resources/mine/courseware/:id': {
+      component: dynamicWrapper(app, ['courseware'], () =>
+        import('../routes/Resources/Details/Courseware')
+      ),
+    },
     '/resources/mine/:status/:type': {
       component: dynamicWrapper(app, ['resource', 'material', 'courseware'], () =>
         import('../routes/Resources/Overview/Resources')
@@ -84,6 +94,16 @@ export const getRouterData = app => {
     },
     '/resources/all': {
       component: dynamicWrapper(app, ['resource'], () => import('../routes/Resources/Overview')),
+    },
+    '/resources/all/material/:id': {
+      component: dynamicWrapper(app, ['material'], () =>
+        import('../routes/Resources/Details/Material')
+      ),
+    },
+    '/resources/all/courseware/:id': {
+      component: dynamicWrapper(app, ['courseware'], () =>
+        import('../routes/Resources/Details/Courseware')
+      ),
     },
     '/resources/all/:status/:type': {
       component: dynamicWrapper(app, ['resource', 'material', 'courseware'], () =>
