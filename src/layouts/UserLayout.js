@@ -42,10 +42,8 @@ class UserLayout extends React.PureComponent {
               <div className={styles.header}>
                 <Link to="/">
                   <img alt="logo" className={styles.logo} src={logo} />
-                  <span className={styles.title}>内容云管理系统</span>
                 </Link>
               </div>
-              <div className={styles.desc}>内容云是威爱教育公司提供的在线虚拟课件素材商城</div>
             </div>
             <Switch>
               {getRoutes(match.path, routerData).map(item => (

@@ -9,7 +9,11 @@ export default {
   namespace: 'login',
 
   state: {
-    status: undefined,
+    message: '',
+    data: {
+      currentAuthority: '',
+      account: '',
+    },
   },
 
   effects: {
@@ -20,7 +24,7 @@ export default {
         payload: response,
       });
       // Login successfully
-      if (response.status === 'ok') {
+      if (response.message === 'success') {
         reloadAuthorized();
         const urlParams = new URL(window.location.href);
         const params = getPageQuery();
@@ -45,7 +49,10 @@ export default {
         type: 'changeLoginStatus',
         payload: {
           status: false,
-          currentAuthority: 'guest',
+          message: 'logout',
+          data: {
+            currentAuthority: 'guest',
+          },
         },
       });
       reloadAuthorized();
@@ -62,11 +69,10 @@ export default {
 
   reducers: {
     changeLoginStatus(state, { payload }) {
-      setAuthority(payload.currentAuthority);
+      setAuthority(payload.data.currentAuthority);
       return {
         ...state,
-        status: payload.status,
-        type: payload.type,
+        ...payload,
       };
     },
   },

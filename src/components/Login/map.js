@@ -3,7 +3,7 @@ import { Input, Icon } from 'antd';
 import styles from './index.less';
 
 const map = {
-  UserName: {
+  Account: {
     component: Input,
     props: {
       size: 'large',
@@ -13,7 +13,7 @@ const map = {
     rules: [
       {
         required: true,
-        message: 'Please enter username!',
+        message: 'Please enter account!',
       },
     ],
   },
