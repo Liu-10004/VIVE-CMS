@@ -40,4 +40,18 @@ async function upload({ file, token }) {
   }
 }
 
-export { upload };
+async function download(token) {
+  const { region, accessKeyId, accessKeySecret, securityToken, bucket, key } = token;
+
+  const client = oss({
+    region,
+    accessKeyId,
+    accessKeySecret,
+    stsToken: securityToken,
+    bucket,
+  });
+
+  return client.signatureUrl(key, { expires: 3600 });
+}
+
+export { upload, download };

@@ -12,6 +12,11 @@ const menuData = [
         authority: 'admin',
       },
       {
+        name: '素材详情',
+        path: 'all/material/:id',
+        hideInMenu: true,
+      },
+      {
         name: '课件详情',
         path: 'all/courseware/:id',
         hideInMenu: true,
@@ -19,6 +24,11 @@ const menuData = [
       {
         name: '我的素材',
         path: 'mine',
+      },
+      {
+        name: '素材详情',
+        path: 'mine/material/:id',
+        hideInMenu: true,
       },
       {
         name: '课件详情',

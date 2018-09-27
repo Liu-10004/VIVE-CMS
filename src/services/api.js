@@ -90,6 +90,10 @@ export async function addMaterial(params) {
   });
 }
 
+export async function queryMaterialDetail(params) {
+  return request(`/api/materials/${params.id}`);
+}
+
 export async function queryCoursewareDetail(params) {
   return request(`/api/coursewares/${params.id}`);
 }

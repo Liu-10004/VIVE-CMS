@@ -19,6 +19,23 @@ const fakeResource = ({ status }) => ({
   reason: status === 'UNPASSED' ? '描述不对' : undefined,
 });
 
+const fakeMaterialDetail = ({ id }) => ({
+  id,
+  title: '一个素材',
+  type: ['1', '2'][Math.floor(Math.random() * 2)],
+  format: ['fbx', 'abm'][Math.floor(Math.random() * 2)],
+  category: ['category1', 'category2', 'category3'],
+  level: ['1', '2'][Math.floor(Math.random() * 2)],
+  tags: ['tag1', 'tag2', 'tag3'],
+  coursewares: ['语文课', '数学课', '品酒课'],
+  video: '',
+  thumbnails: [
+    'https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png',
+    'https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png',
+    'https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png',
+    'https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png',
+  ],
+});
 
 const fakeCoursewareDetail = ({ id }) => ({
   id,
@@ -86,10 +103,23 @@ const getStatus = (_, res) => {
   }
 };
 
-export { getStatus, getResources };
+const getMaterialDetail = (req, res) => {
+  const { url } = req;
+
+  const result = {
+    message: 'success',
+    data: fakeMaterialDetail(url.split('/').slice(-1)[0]),
+  };
+
+  if (res && res.json) {
+    res.json(result);
+  } else {
+    return result;
+  }
+};
 
 const getCoursewareDetail = (req, res) => {
-  const url = req.url;
+  const { url } = req;
 
   const result = {
     message: 'success',
@@ -103,4 +133,4 @@ const getCoursewareDetail = (req, res) => {
   }
 };
 
-export { getStatus, getResources, getCoursewareDetail };
+export { getStatus, getResources, getCoursewareDetail, getMaterialDetail };
