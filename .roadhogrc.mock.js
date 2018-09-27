@@ -81,27 +81,30 @@ const proxy = {
       data: '4028efe965cc80940165cc80e03e0000',
     });
   },
-  'POST /api/login/account': (req, res) => {
-    const { password, userName, type } = req.body;
-    if (password === '888888' && userName === 'admin') {
+  'POST /api/login': (req, res) => {
+    const { password, account } = req.query;
+    if (password === '888888' && account === 'admin') {
       res.send({
-        status: 'ok',
-        type,
-        currentAuthority: 'admin',
+        message: 'success',
+        data: {
+          currentAuthority: 'admin',
+          account,
+        },
       });
       return;
     }
-    if (password === '123456' && userName === 'user') {
+    if (password === '123456' && account === 'user') {
       res.send({
-        status: 'ok',
-        type,
-        currentAuthority: 'user',
+        message: 'success',
+        data: {
+          currentAuthority: 'user',
+          account,
+        },
       });
       return;
     }
     res.send({
       status: 'error',
-      type,
       currentAuthority: 'guest',
     });
   },

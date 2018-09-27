@@ -6,9 +6,11 @@ export async function queryActivities() {
 }
 
 export async function fakeAccountLogin(params) {
-  return request('/api/login/account', {
+  return request(`/api/login?${stringify(params)}`, {
     method: 'POST',
-    body: params,
+    headers: {
+      'Content-Type': 'application/x-www-form-urlencoded',
+    },
   });
 }
 
