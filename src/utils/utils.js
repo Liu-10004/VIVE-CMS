@@ -211,3 +211,7 @@ export function parsePath(pathname) {
     type: paths.slice(-1)[0], // 资源的类型
   };
 }
+
+export function filterArraySpace(values) {
+  return values.map(item => item.trim()).filter(item => !(!item || item === ''));
+}

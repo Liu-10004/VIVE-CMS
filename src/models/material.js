@@ -86,6 +86,47 @@ export default {
       }
     },
 
+    *addPano({ payload }, { all, call }) {
+      const { thumbnails, file } = payload;
+      // eslint-disable-next-line no-param-reassign
+      delete payload.thumbnails;
+      // eslint-disable-next-line no-param-reassign
+      delete payload.file;
+      const addMaterialResponse = yield call(addMaterial, payload);
+
+      if (addMaterialResponse.message === 'success') {
+        const materialId = addMaterialResponse.data;
+
+        // 请求 ali-oss token
+        const thumbnailsToken = yield call(getToken, { tokenType: 2, id: materialId });
+        const fileToken = yield call(getToken, { tokenType: 1, id: materialId });
+
+        if (thumbnailsToken.message === 'success' && fileToken.message === 'success') {
+          const uploadResourceResponse = yield all([
+            call(uploadResource, {
+              file: thumbnails,
+              token: thumbnailsToken.data,
+            }),
+            call(uploadResource, {
+              file,
+              token: fileToken.data,
+            }),
+          ]);
+
+          if (uploadResourceResponse.every(item => item.message === 'success')) {
+            return {
+              ...payload,
+              id: materialId,
+              thumbnails: thumbnails.name,
+              file: file.name,
+            };
+          }
+        }
+      } else {
+        message.error('上传失败，检查网络后再试！');
+      }
+    },
+
     *update({ payload }, { call, put, select }) {
       const response = yield call(updateMaterial, payload);
 
