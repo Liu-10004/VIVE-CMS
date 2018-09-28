@@ -77,6 +77,18 @@ const proxy = {
   'GET /api/coursewares': getResources,
   'GET /api/coursewares/:id': getCoursewareDetail,
   'GET /api/materials/:id': getMaterialDetail,
+  'DELETE /api/coursewares/:id': (req, res) => {
+    res.send({
+      message: 'success',
+      data: '删除成功',
+    });
+  },
+  'DELETE /api/materials/:id': (req, res) => {
+    res.send({
+      message: 'success',
+      data: '删除成功',
+    });
+  },
   'POST /api/materials': (req, res) => {
     res.send({
       message: 'success',
