@@ -552,4 +552,83 @@ const coursewares = [
   },
 ];
 
-export { coursewares, models };
+const panoramas = [
+  {
+    value: '全景图片',
+    label: '全景图片',
+    children: [
+      {
+        value: '古建',
+        label: '古建',
+      },
+      {
+        value: '城市',
+        label: '城市',
+      },
+      {
+        value: '山川',
+        label: '山川',
+      },
+      {
+        value: '太空',
+        label: '太空',
+      },
+      {
+        value: '天空',
+        label: '天空',
+      },
+      {
+        value: '景点',
+        label: '景点',
+      },
+      {
+        value: '自然',
+        label: '自然',
+      },
+      {
+        value: '建筑',
+        label: '建筑',
+      },
+    ],
+  },
+  {
+    value: '全景视频',
+    label: '全景视频',
+    children: [
+      {
+        value: '古建',
+        label: '古建',
+      },
+      {
+        value: '城市',
+        label: '城市',
+      },
+      {
+        value: '山川',
+        label: '山川',
+      },
+      {
+        value: '太空',
+        label: '太空',
+      },
+      {
+        value: '天空',
+        label: '天空',
+      },
+      {
+        value: '景点',
+        label: '景点',
+      },
+      {
+        value: '自然',
+        label: '自然',
+      },
+      {
+        value: '建筑',
+        label: '建筑',
+      },
+    ],
+  },
+];
+
+export { coursewares, models, panoramas };

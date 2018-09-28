@@ -62,12 +62,12 @@ const proxy = {
       message: 'success',
       data: {
         securityToken:
-          'CAIS3QJ1q6Ft5B2yfSjIr4mAOf/cj6ts0feqZmXBi3E/eN17lf3A1Dz2IHhPe3VgBOAYvvU1nW9S6P8clr1tSoFISVGBNJYrsckOq1/6ONea45QNKje0P9n3d1KIAjvXgeUiCoeQFaEnE5XAQlTAkTAJjtmeXD6+XlujHISUgJp8FLo+VRW5ajw0Y7UzIRB5+vcHKVzbN/umLmTi4AzqAVFvpxB3hE5m9K272bf80BfFi0DgweJni+bbK5O/Pc53J8U9AZXnwu1oe6bclSVU7AVGsb9rhqhF8nCb5ovNDldcvUvbP7fY+ddhdFYnO6RnF6If/Kn1zaUg5KuRtfyukEkQZ74MCH6BGNHxnZKcIo7zaIZlL4ScEm/Wz9WCOqPytw4Zen8BPGtIAYF5cSAsWUF8FGGLcPb4og6TPB3QQqyEwbww1oFu01Lr8NyFKl6CWbyF1jwCPZsxf53F1IGqbLyLGoABIg7l2krn70I/c42ttOSQOwodMWtdbz4Ql5nmQRmlDPu/u94oB280xgCEZkHeT0dTCkRSqG150DYCoAPfAcK4japyeXH196FnO3BMlyS9nRskSkKqu2I5Q7pkwpyThCN5/6YqY5ZIF58vvlxR/dZ++yYybkRgBzrgdZT+rZhISWw=',
-        accessKeySecret: 'CgnG3paESL2V5FJB4vVspqHp9Zt9bxqmTerdatDjjxnE',
-        accessKeyId: 'STS.NJ5rEhbtMf5AdCpoqjtRWz8k6',
-        expiration: '2018-09-21T07:47:14Z',
-        bucket: 'vivedu-cloud-public',
-        key: '4028efe665d5dcbf0165d5dd389a0006/',
+          'CAIS3gJ1q6Ft5B2yfSjIr4mGIozgiZdC3fqjb2rpkkYiP/lLirHDjTz2IHhPe3VgBOAYvvU1nW9S6P8clr1tSoFISVGBNJYrscQIoVP4PNGc4ZQSV2nrAdn3d1KIAjvXgeUjCoeQFaEmE5XAQlTAkTAJjtmeXD6+XlujHISUgJp8FLo+VRW5ajw0Y7UzIRB5+vcHKVzbN/umLmTj4AzqAVFvpxB3hE5m9K272bf80BfFi0DgweJniubaK5O/Pc53J8U9AZXnwu1oe6bclSVU7AVGsb9sjbJN5TqA4onHU1Rf7kvYbuSJ/IQwIlcgOPU0RfVJpfbxyqUg4rSU1aaPkk0SYLsKCn+FGtzxkZadQNnEbIhpKezJXF3Wyc2KO5XPtAcpXGkWLgsieaB6ciQvVUxxGm+Ke/X+pwqUO1m5OKGB0bAr151u1Env/teMKFWJTq+QzSECIJg4YlP22v2JYd0xGBqAAQnAxQZBOUUOqC3qQd8eRFTX1n3GrzGgOe4mrEdP0Y+vNx1dbh20QqSZ0Pty8WjE4s3qwdZqtQ6mvrreOBWfiW0fqXtT/lULhChfpavPneBe3n9whGt0iES4QUl6/rjDn7WhRovr1NQXhovECx4NiI64e/KP32jZeHvbR6QcjM6C',
+        accessKeySecret: '8HXmBF1kbcZoK64TwVjsKGzPvJ4x2FULUh3ngn8CS4Yy',
+        accessKeyId: 'STS.NJ3i6TdHcj8HmLXvFw3vgetho',
+        expiration: '2018-09-25T13:33:37Z',
+        bucket: 'vivedu-cloud-private',
+        key: '4028efe665f5f17f0165f63eafe70000/',
         region: 'oss-cn-beijing',
       },
     });
@@ -80,7 +80,7 @@ const proxy = {
   'POST /api/materials': (req, res) => {
     res.send({
       message: 'success',
-      data: '4028efe965cc80940165cc80e03e0000',
+      data: '4028efe665f5f17f0165f63eafe70000',
     });
   },
   'POST /api/login': (req, res) => {

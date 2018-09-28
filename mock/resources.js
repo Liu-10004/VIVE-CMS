@@ -13,7 +13,7 @@ const fakeResource = ({ status }) => ({
   thumbnails: [
     'https://vivedu-courseware.oss-cn-beijing.aliyuncs.com/2c9281895d688ccb015d742a04720000/cover-cover.jpg?Expires=1536836217&OSSAccessKeyId=TMP.AQHAMfs3VYYsXPhP-3GXZgNoVfBx1aKAJCh_h2KOyEzJEzUYuJercZDrvefaAAAwLAIUCcR72JRpiythCW3w9U_iN5mneeUCFAkXyt6KFHOL1_STDw1ZreRobR0Q&Signature=njZU8M8w18RMt%2BZzBwKQm%2FncOAs%3D',
   ],
-  category: ['场景'],
+  category: ['义务教育', '科学', '物质科学'],
   date: 'Tue Sep 11 2018 16:28:08 GMT+0800 (中国标准时间)',
   uploader: status === 'PASSING' ? 'manager@vivedu.com' : undefined,
   reason: status === 'UNPASSED' ? '描述不对' : undefined,

@@ -146,6 +146,19 @@ export const getRouterData = app => {
         import('../routes/Resources/UploadModel/Step3')
       ),
     },
+    '/resources/upload-pano': {
+      component: dynamicWrapper(app, ['material'], () => import('../routes/Resources/UploadPano')),
+    },
+    '/resources/upload-pano/step1': {
+      component: dynamicWrapper(app, ['material'], () =>
+        import('../routes/Resources/UploadPano/Step1')
+      ),
+    },
+    '/resources/upload-pano/step2': {
+      component: dynamicWrapper(app, ['material'], () =>
+        import('../routes/Resources/UploadPano/Step2')
+      ),
+    },
     '/user': {
       component: dynamicWrapper(app, [], () => import('../layouts/UserLayout')),
     },

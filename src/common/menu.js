@@ -43,6 +43,10 @@ const menuData = [
         name: '上传模型',
         path: 'upload-model',
       },
+      {
+        name: '上传 VR 全景',
+        path: 'upload-pano',
+      },
     ],
   },
   {
