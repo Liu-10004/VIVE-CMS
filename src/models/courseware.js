@@ -28,16 +28,20 @@ export default {
       // eslint-disable-next-line no-param-reassign
       delete payload.thumbnails;
       let response = yield call(addCourseware, payload);
-      const coursewareId = response.data;
+
       if (response.message === 'success') {
+        const coursewareId = response.data;
+
         // 请求 ali-oss token
         response = yield call(getToken, { tokenType: 2, id: coursewareId });
+
         if (response.message === 'success') {
           response = yield all(
             thumbnails.fileList.map(file =>
               call(uploadResource, { file: file.originFileObj, token: response.data })
             )
           );
+
           if (response.every(item => item.message === 'success')) {
             const params = {
               ...payload,
@@ -68,21 +72,21 @@ export default {
       const response = yield call(updateCourseware, payload);
 
       // 下架
-      if (payload.status === '4' && response.message === 'success') {
-        const courseware = yield select(state => state.courseware);
-        const dataSource = courseware.data;
-        const pages = courseware.pages;
+      if (response.message === 'success') {
+        if (payload.status === '4') {
+          const courseware = yield select(state => state.courseware);
+          const { data: dataSource, pages } = courseware;
 
-        yield put({
-          type: 'save',
-          payload: {
-            ...pages,
-            totalElements: pages.totalElements - 1,
-            content: dataSource.filter(item => item.id !== payload.id),
-          },
-        });
+          yield put({
+            type: 'save',
+            payload: {
+              ...pages,
+              totalElements: pages.totalElements - 1,
+              content: dataSource.filter(item => item.id !== payload.id),
+            },
+          });
+        }
       }
-
       return response;
     },
 
@@ -91,8 +95,7 @@ export default {
 
       if (response.message === 'success') {
         const courseware = yield select(state => state.materials);
-        const dataSource = courseware.data;
-        const pages = courseware.pages;
+        const { data: dataSource, pages } = courseware;
 
         yield put({
           type: 'save',
