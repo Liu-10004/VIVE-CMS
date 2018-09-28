@@ -74,11 +74,12 @@ export default class Step1 extends PureComponent {
           tags,
           category,
         } = values;
-        const isTagMaxLength = validateTagLength(tags, 6);
+
+        const filtertags = filterArraySpace(tags);
+        const isTagMaxLength = validateTagLength(filtertags, 6);
         const isThumbnails = validateThumbnails(thumbnailList, 1, 1024 * 1024 * 1);
         const isFile = validateThumbnails(fileList, 1, 1024 * 1024 * 100);
 
-        const filtertags = filterArraySpace(tags);
         if (!filtertags.length || !isTagMaxLength)
           return message.warning(`请输入有效的标签，且标签字数不超过6个字`);
         if (!isThumbnails || !isFile)
