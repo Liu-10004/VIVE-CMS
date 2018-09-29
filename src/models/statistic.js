@@ -1,9 +1,8 @@
-import { message } from 'antd';
 import { queryResourceStatus } from '../services/api';
 import { status as ResourceStatus } from '../enums/ResourceStatus';
 
 export default {
-  namespace: 'resource',
+  namespace: 'statistic',
 
   state: {
     count: Object.keys(ResourceStatus).reduce(
@@ -13,12 +12,17 @@ export default {
   },
 
   effects: {
-    *fetchStatus({ payload }, { call, put }) {
-      const response = yield call(queryResourceStatus, payload);
+    *fetchResourceStatus({ payload }, { call, put }) {
+      let response;
+      if (payload.role) {
+        response = yield call(queryResourceStatus, payload);
+      } else {
+        response = yield call(queryResourceStatus);
+      }
 
       if (response.message === 'success') {
         yield put({
-          type: 'saveStatus',
+          type: 'saveResourceStatus',
           payload: response,
         });
       }
@@ -26,7 +30,7 @@ export default {
   },
 
   reducers: {
-    saveStatus(state, { payload }) {
+    saveResourceStatus(state, { payload }) {
       return {
         ...state,
         count: payload.data.reduce(

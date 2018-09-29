@@ -94,7 +94,7 @@ export default {
       const response = yield call(deleteCourseware, payload);
 
       if (response.message === 'success') {
-        const courseware = yield select(state => state.materials);
+        const courseware = yield select(state => state.courseware);
         const { data: dataSource, pages } = courseware;
 
         yield put({
