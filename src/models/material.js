@@ -49,7 +49,7 @@ export default {
           const thumbnailsResponse = yield all(
             thumbnails.map(thumbnail =>
               call(uploadResource, {
-                thumbnail: thumbnail.originFileObj,
+                file: thumbnail.originFileObj,
                 token: thumbnailToken.data,
               })
             )

@@ -14,7 +14,7 @@ export default {
   effects: {
     *fetchResourceStatus({ payload }, { call, put }) {
       let response;
-      if (payload.role) {
+      if (payload.role === 0) {
         response = yield call(queryResourceStatus, payload);
       } else {
         response = yield call(queryResourceStatus);

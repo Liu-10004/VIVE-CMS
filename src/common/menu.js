@@ -40,7 +40,7 @@ const menuData = [
         path: 'upload-courseware',
       },
       {
-        name: '上传模型',
+        name: '上传模型 / 场景',
         path: 'upload-model',
       },
       {

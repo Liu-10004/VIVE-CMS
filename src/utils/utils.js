@@ -190,6 +190,11 @@ export function validateThumbnails(files, requireFilesLength, limitSize) {
   return files.length === requireFilesLength && isLimitSize;
 }
 
+export function validateFile(file, size, formats) {
+  const validateFormat = file.name.split('.').slice(-1)[0];
+  return formats.some(format => format === validateFormat) && file.size < size;
+}
+
 export function getRoutePath(basePath, currentPath) {
   let nextPath;
 
