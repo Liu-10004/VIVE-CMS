@@ -20,6 +20,10 @@ import CoursewareList from 'components/CoursewareTable';
 import { validateTagLength, validateThumbnails, filterArraySpace } from 'utils/utils';
 import { panoramas } from 'enums/ResourceOptions';
 
+message.config({
+  maxCount: 1,
+});
+
 const FormItem = Form.Item;
 const RadioGroup = Radio.Group;
 const { Dragger } = Upload;
@@ -76,14 +80,13 @@ export default class Step1 extends PureComponent {
         } = values;
 
         const filtertags = filterArraySpace(tags);
-        const isTagMaxLength = validateTagLength(filtertags, 6);
         const isThumbnails = validateThumbnails(thumbnailList, 1, 1024 * 1024 * 1);
-        const isFile = validateThumbnails(fileList, 1, 1024 * 1024 * 100);
+        const isFile = validateThumbnails(fileList, 1, 1024 * 1024 * 1024);
 
-        if (!filtertags.length || !isTagMaxLength)
-          return message.warning(`请输入有效的标签，且标签字数不超过6个字`);
-        if (!isThumbnails || !isFile)
-          return message.warning('请检查上传的文件和缩略图的个数和大小');
+        if (!title.trim()) return message.warning(`标题不符合上传要求`);
+        if (!validateTagLength(filtertags, 6) || !filtertags.length || filtertags.length > 7)
+          return message.warning(`标签不符合上传要求`);
+        if (!isThumbnails || !isFile) return message.warning('文件或缩略图标签不符合上传要求');
 
         // 显示按钮的加载中状态
         this.setState({ loading: true });
@@ -242,7 +245,7 @@ export default class Step1 extends PureComponent {
       <PageHeaderLayout>
         <Card bordered={false}>
           <Form onSubmit={this.handleSubmit} style={{ marginTop: 8 }}>
-            <FormItem {...formItemLayout} label="名称" help="不超过14个汉字">
+            <FormItem {...formItemLayout} label="名称" help="不超过 14 个汉字">
               {getFieldDecorator('title', {
                 rules: [
                   {
@@ -260,7 +263,6 @@ export default class Step1 extends PureComponent {
                     message: '请选择类别',
                   },
                 ],
-                initialValue: ['全景图片', '古建'],
               })(
                 <Cascader
                   options={panoramas}
@@ -278,7 +280,6 @@ export default class Step1 extends PureComponent {
                     message: '请选择素材级别',
                   },
                 ],
-                initialValue: '1',
               })(
                 <RadioGroup name="radiogroup">
                   <Radio value="1">精品</Radio>
@@ -305,7 +306,7 @@ export default class Step1 extends PureComponent {
             <FormItem
               {...formItemLayout}
               label="标签"
-              help="标签中不能含有空格，字数不超过6个字，最多不超过7个标签，以逗号分隔"
+              help="标签中不能含有空格，字数不超过 6 个字，最多不超过 7 个标签，以逗号分隔"
             >
               {getFieldDecorator('tags', {
                 rules: [
@@ -314,9 +315,9 @@ export default class Step1 extends PureComponent {
                     message: '请输入标签',
                   },
                 ],
-              })(<Select mode="tags" style={{ width: '100%' }} maxTagCount={7} />)}
+              })(<Select mode="tags" style={{ width: '100%' }} />)}
             </FormItem>
-            <FormItem {...formItemLayout} label="缩略图" help="上传一张缩略图，大小不超过1M">
+            <FormItem {...formItemLayout} label="缩略图" help="上传一张缩略图，大小不超过 1MB">
               {getFieldDecorator('thumbnails', {
                 rules: [
                   {
@@ -337,7 +338,7 @@ export default class Step1 extends PureComponent {
             <FormItem
               {...formItemLayout}
               label="VR 全景文件"
-              help="上传一个 VR 全景文件，大小不超过100M"
+              help="上传一个 VR 全景文件，大小不超过 1GB"
             >
               {getFieldDecorator('file', {
                 rules: [
@@ -355,7 +356,7 @@ export default class Step1 extends PureComponent {
               )}
             </FormItem>
             <FormItem {...submitFormLayout} style={{ marginTop: 32 }}>
-              <Button type="primary" icon="cloud-upload" loading={loading} htmlType="submit">
+              <Button type="primary" icon="cloud" loading={loading} htmlType="submit">
                 上传
               </Button>
             </FormItem>
