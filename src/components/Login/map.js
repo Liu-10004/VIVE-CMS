@@ -13,7 +13,7 @@ const map = {
     rules: [
       {
         required: true,
-        message: 'Please enter account!',
+        message: '请输入账号!',
       },
     ],
   },
@@ -28,7 +28,7 @@ const map = {
     rules: [
       {
         required: true,
-        message: 'Please enter password!',
+        message: '请输入密码',
       },
     ],
   },
@@ -37,16 +37,16 @@ const map = {
     props: {
       size: 'large',
       prefix: <Icon type="mobile" className={styles.prefixIcon} />,
-      placeholder: 'mobile number',
+      placeholder: '手机号',
     },
     rules: [
       {
         required: true,
-        message: 'Please enter mobile number!',
+        message: '请输入手机号码！',
       },
       {
         pattern: /^1\d{10}$/,
-        message: 'Wrong mobile number format!',
+        message: '手机号码格式错误!',
       },
     ],
   },
@@ -60,7 +60,7 @@ const map = {
     rules: [
       {
         required: true,
-        message: 'Please enter Captcha!',
+        message: '请输入验证码!',
       },
     ],
   },
