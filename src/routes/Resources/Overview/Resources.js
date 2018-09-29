@@ -6,14 +6,14 @@ import { routerRedux } from 'dva/router';
 import { Tabs, Divider, Button, Popconfirm, DatePicker, Input, Table, Row, Col } from 'antd';
 import { formatDate } from 'utils/time';
 import { getRoutePath, parsePath } from 'utils/utils';
-import { Status, parsedStatus as parsedResourceStatus } from 'enums/ResourceStatus';
-import { categories, collectedCategories } from 'enums/ResourceCategory';
+import { parsedStatus as parsedResourceStatus } from 'enums/ResourceStatus';
+import { collectedCategories } from 'enums/ResourceCategory';
 import ResourceFilter from 'components/ResourceManager/ResourceFilter';
 import styles from './Resources.less';
 
-const TabPane = Tabs.TabPane;
-const RangePicker = DatePicker.RangePicker;
-const Search = Input.Search;
+const { TabPane } = Tabs;
+const { RangePicker } = DatePicker;
+const { Search } = Input;
 
 const PAGE_SIZE = 20;
 const ROLE = 0;
@@ -24,8 +24,8 @@ const parsedCategories = collectedCategories.reduce(
   {}
 );
 
-@connect(({ resource, material, courseware }) => ({
-  resource,
+@connect(({ statistic, material, courseware }) => ({
+  statistic,
   material,
   courseware,
   global,
@@ -83,7 +83,7 @@ class ResourceList extends React.Component {
     } = this.props;
     const { isAdmin } = parsePath(pathname);
     const query = parse(search, { ignoreQueryPrefix: true });
-    const nextQuery = { page: 0, ...query };
+    const nextQuery = 'page' in query ? { ...query } : { page: 0, ...query };
 
     if (query.keyword) this.setState({ keyword: query.keyword });
 
@@ -97,11 +97,11 @@ class ResourceList extends React.Component {
 
     // 获取 status count 数据
     dispatch({
-      type: 'resource/fetchStatus',
-      payload: isAdmin ? { role: ROLE } : undefined,
+      type: 'statistic/fetchResourceStatus',
+      payload: isAdmin ? { role: ROLE } : { role: null },
     });
 
-    this.fetchData(nextQuery);
+    this.fetchData(pathname, nextQuery);
   }
 
   componentWillReceiveProps({ location: nextLocation }) {
@@ -111,15 +111,9 @@ class ResourceList extends React.Component {
     const { pathname: nextPathname, search: nextSearch } = nextLocation;
 
     // 避免页面初次加载时进行 push page=0 到路由的操作引起重复请求数据，所以需要将 '?page=0' 过滤出去
-    if (
-      (nextSearch === '?page=0' && nextSearch !== search) ||
-      (pathname === nextPathname && search === nextSearch)
-    )
-      return;
+    if (pathname === nextPathname && search === nextSearch) return;
 
-    const query = parse(nextSearch, { ignoreQueryPrefix: true });
-
-    this.fetchData(query);
+    this.fetchData(nextPathname, nextSearch);
   }
 
   // 操作资源
@@ -128,18 +122,17 @@ class ResourceList extends React.Component {
       dispatch,
       location: { pathname },
     } = this.props;
-    const { isAdmin, status, type } = parsePath(pathname);
+    const { isAdmin, type } = parsePath(pathname);
     const category = parsedCategories[type].parent;
-    const statusCode = parsedResourceStatus[status.toUpperCase()]; // 获取资源状态码
 
     dispatch({
-      type: `${category}s/${operate}`,
+      type: `${category}/${operate}`,
       payload: operate === 'update' ? { id, status: '4' } : { id },
     }).then(response => {
       if (response.message === 'success') {
         dispatch({
-          type: 'resource/fetchStatus',
-          payload: isAdmin ? { role: ROLE } : undefined,
+          type: 'statistic/fetchResourceStatus',
+          payload: isAdmin ? { role: ROLE } : { role: null },
         });
       }
     });
@@ -147,14 +140,17 @@ class ResourceList extends React.Component {
 
   // Tab 发生改变时, 更新路由
   onStatusChange = status => {
-    const { isAdmin, type } = parsePath(this.props.location.pathname);
-    const statusCode = parsedResourceStatus[status.toUpperCase()]; // 获取资源状态码
-    const basePath = isAdmin ? '/resources/all' : '/resources/mine';
+    const {
+      dispatch,
+      location: { pathname },
+    } = this.props;
+    const splitPath = pathname.split('/');
+    const basePath = `/${splitPath[1]}/${splitPath[2]}`;
 
     // 清空 keyword
     this.setState({ keyword: '' });
 
-    this.props.dispatch(
+    dispatch(
       routerRedux.push({
         pathname: getRoutePath(basePath, status),
         search: stringify({ page: 0 }), // 默认加载第一页
@@ -164,16 +160,19 @@ class ResourceList extends React.Component {
 
   // 筛选资源类型或状态时, 更新路由
   handleSelect = category => {
-    const { isAdmin, status } = parsePath(this.props.location.pathname);
+    const {
+      dispatch,
+      location: { pathname },
+    } = this.props;
+    const splitPath = pathname.split('/');
     const type = category.name;
 
-    const nextPathname = isAdmin
-      ? `/resources/all/${status}/${type}`
-      : `/resources/mine/${status}/${type}`;
+    const nextPathname = `/${splitPath[1]}/${splitPath[2]}/${splitPath[3]}/${type}`;
 
     // 清空 keyword
     this.setState({ keyword: '' });
-    this.props.dispatch(
+
+    dispatch(
       routerRedux.push({
         pathname: nextPathname,
         search: stringify({ page: 0 }), // 默认加载第一页
@@ -229,20 +228,23 @@ class ResourceList extends React.Component {
     dispatch(routerRedux.push({ pathname, search: stringify(nextQuery) }));
   };
 
-  fetchData = currentSelection => {
-    const {
-      dispatch,
-      location: { pathname },
-    } = this.props;
-    const { isAdmin, status, type } = parsePath(pathname);
-    const { date, ...rest } = currentSelection;
+  fetchData = (path, query) => {
+    const { dispatch } = this.props;
+    const { isAdmin, status, type } = parsePath(path);
+    const { date, keyword, page } = parse(query, { ignoreQueryPrefix: true });
     let payload = {
-      role: isAdmin ? ROLE : undefined,
       status: parsedResourceStatus[status.toUpperCase()], // 获取资源状态码,
-      page: 0,
+      page,
       pageSize: PAGE_SIZE,
-      ...rest,
     };
+
+    if (keyword) {
+      payload = { ...payload, keyword };
+    }
+
+    if (isAdmin) {
+      payload = { ...payload, role: ROLE };
+    }
 
     if (date) {
       let dateRange = date.split(',');
@@ -255,16 +257,15 @@ class ResourceList extends React.Component {
       payload = { ...payload, ...dateRange };
     }
 
-    if (parsedCategories[type].parent === 'material') {
-      payload = { ...payload, type: parsedCategories[type].id };
-
+    if (type === 'courseware') {
       dispatch({
-        type: 'material/fetch',
+        type: 'courseware/fetch',
         payload,
       });
     } else {
+      payload = { ...payload, type: parsedCategories[type].id };
       dispatch({
-        type: 'courseware/fetch',
+        type: 'material/fetch',
         payload,
       });
     }
@@ -280,9 +281,10 @@ class ResourceList extends React.Component {
     const basePath = isAdmin ? `/resources/all/${category}` : `/resources/mine/${category}`;
     let column;
 
+    // eslint-disable-next-line default-case
     switch (status) {
       case 'published':
-        let column = [
+        column = [
           {
             title: '操作',
             dataIndex: 'action',
@@ -450,7 +452,7 @@ class ResourceList extends React.Component {
 
   render() {
     const {
-      resource: { count },
+      statistic: { count },
       material,
       courseware,
       location: { search, pathname },
@@ -458,7 +460,7 @@ class ResourceList extends React.Component {
     const { keyword } = this.state;
     const { type, status, isAdmin } = parsePath(pathname);
 
-    const { date, page } = parse(search, { ignoreQueryPrefix: true });
+    const { date } = parse(search, { ignoreQueryPrefix: true });
     const columns = this.getColumns();
 
     // 日期筛选
@@ -488,10 +490,15 @@ class ResourceList extends React.Component {
     return (
       <div>
         <Tabs activeKey={status} animated={false} onChange={this.onStatusChange}>
-          {Object.keys(count).map((status, index) => {
+          {Object.keys(count).map((resourceStatus, index) => {
             const tabName = isAdmin ? `${adminMenuData[index]}` : `${personalMenuData[index]}`;
 
-            return <TabPane key={status.toLowerCase()} tab={`${tabName}(${count[status]})`} />;
+            return (
+              <TabPane
+                key={resourceStatus.toLowerCase()}
+                tab={`${tabName}(${count[resourceStatus]})`}
+              />
+            );
           })}
         </Tabs>
         <ResourceFilter categories={categories} currentType={type} onSelect={this.handleSelect} />
