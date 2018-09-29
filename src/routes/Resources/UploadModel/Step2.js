@@ -1,12 +1,23 @@
 import React, { Fragment } from 'react';
 import { connect } from 'dva';
-import { Form, Input, Button, Select, Divider, Icon, Radio, Modal, Tag, Cascader } from 'antd';
+import {
+  Form,
+  Input,
+  Button,
+  Select,
+  Divider,
+  Icon,
+  Radio,
+  Modal,
+  Tag,
+  Cascader,
+  message,
+} from 'antd';
 import { routerRedux } from 'dva/router';
 import CoursewareList from 'components/CoursewareTable';
 import { models } from 'enums/ResourceOptions';
+import { filterArraySpace, validateTagLength } from 'utils/utils';
 import styles from './style.less';
-
-const { Option } = Select;
 
 const formItemLayout = {
   labelCol: {
@@ -17,9 +28,13 @@ const formItemLayout = {
   },
 };
 
+message.config({
+  maxCount: 1,
+});
+
 @Form.create()
 class Step2 extends React.PureComponent {
-  state = { visible: false, coursewareTags: null };
+  state = { visible: false, coursewareIDs: [], loading: false };
 
   showModal = () => {
     const { dispatch } = this.props;
@@ -48,80 +63,99 @@ class Step2 extends React.PureComponent {
   handleSelectedData = data => {
     this.handleCancel();
     this.setState({
-      coursewareTags: data,
+      coursewareIDs: data,
+    });
+  };
+
+  onValidateForm = () => {
+    const { form, dispatch, materialData } = this.props;
+    const { validateFields } = form;
+    const { coursewareIDs } = this.state;
+    validateFields((err, values) => {
+      if (!err) {
+        const { title, tags, category } = values;
+        const filterTags = filterArraySpace(tags);
+        const tagsLength = filterTags.length;
+
+        if (!title.trim()) {
+          message.warn('标题不符合上传要求');
+          return;
+        }
+
+        if (!validateTagLength(filterTags, 6) || tagsLength > 7 || !tagsLength) {
+          message.warn('标签不符合上传要求');
+          return;
+        }
+
+        if (!materialData.files && !materialData.thumbnails) {
+          message.warn('请重新在第一步选择压缩包和缩略图');
+          return;
+        }
+
+        Object.assign(
+          values,
+          {
+            title: title.trim(),
+          },
+          { tags: filterTags.toString(), category: category.toString() },
+          {
+            coursewareIDs: !coursewareIDs.length ? null : coursewareIDs.toString(),
+          },
+          {
+            type: 1,
+          }
+        );
+
+        this.setState({
+          loading: true,
+        });
+
+        dispatch({
+          type: 'material/addModel',
+          payload: values,
+        })
+          .then(data => {
+            return dispatch({
+              type: 'material/update',
+              payload: data,
+            });
+          })
+          .then(() => {
+            this.setState({ loading: true });
+            dispatch(routerRedux.push('/resources/upload-model/result'));
+          })
+          .catch(error => {
+            // eslint-disable-next-line no-console
+            console.log(error);
+          });
+      }
     });
   };
 
   render() {
-    const { form, dispatch, coursewareData, submitting } = this.props;
-    const { getFieldDecorator, validateFields } = form;
-    const { coursewareTags, visible } = this.state;
+    const { form, coursewareData } = this.props;
+    const { getFieldDecorator } = form;
+    const { coursewareIDs, visible, loading } = this.state;
 
     let coursewares;
-    if (coursewareTags) {
-      coursewares = coursewareTags.map(index => {
+    if (coursewareIDs) {
+      coursewares = coursewareIDs.map(id => {
+        const index = coursewareIDs.indexOf(id);
         return (
-          <Tag closable key={index}>
+          <Tag closable key={id}>
             {coursewareData[index].title}
           </Tag>
         );
       });
     }
 
-    // 选择所属课件的数据表格
-    const tableData = [];
-    for (let i = 0; i < coursewareData.length; i += 1) {
-      tableData.push({
-        key: i,
-        index: i,
-        category: coursewareData[i].category[1],
-        title: coursewareData[i].title,
-      });
-    }
-
-    const onValidateForm = () => {
-      validateFields((err, values) => {
-        if (!err) {
-          const selectedCourseware = coursewareTags.map(tag => coursewareData[tag].id);
-
-          Object.assign(
-            values,
-            { tags: values.tags.toString(), category: values.category.toString() },
-            {
-              coursewareIDs: selectedCourseware.toString(),
-            },
-            {
-              type: 1,
-            }
-          );
-
-          dispatch({
-            type: 'material/addModel',
-            payload: values,
-          })
-            .then(data => {
-              return dispatch({
-                type: 'material/update',
-                payload: data,
-              });
-            })
-            .then(() => {
-              dispatch(routerRedux.push('/resources/upload-model/result'));
-            })
-            .catch(error => {
-              // eslint-disable-next-line no-console
-              console.log(error);
-            });
-        }
-      });
-    };
     return (
       <Fragment>
         <Form layout="horizontal" className={styles.stepForm}>
-          <Form.Item {...formItemLayout} label="标题">
+          <Form.Item {...formItemLayout} label="标题" help="最多 14 个汉字">
             {getFieldDecorator('title', {
               rules: [{ required: true, message: '请填写名称' }],
-            })(<Input placeholder="请给模型起个名字" />)}
+            })(<Input placeholder="请给模型起个名字" maxLength={14} />)}
           </Form.Item>
           <Form.Item {...formItemLayout} label="格式">
             {getFieldDecorator('format', {
@@ -159,23 +193,13 @@ class Step2 extends React.PureComponent {
               onCancel={this.handleCancel}
               footer={null}
             >
-              <CoursewareList handleSelected={this.handleSelectedData} data={tableData} />
+              <CoursewareList handleSelected={this.handleSelectedData} data={coursewareData} />
             </Modal>
           </Form.Item>
-          <Form.Item {...formItemLayout} label="标签">
+          <Form.Item {...formItemLayout} label="标签" help="标签字数不超过 6 个字，最多 7 个标签">
             {getFieldDecorator('tags', {
               rules: [{ required: true, message: '请给模型指定标签' }],
-            })(
-              <Select
-                mode="tags"
-                style={{ width: '100%' }}
-                placeholder="标签字数不超过6个字，最多4个标签"
-                tokenSeparators={[',', '，']}
-                maxTagCount={4}
-              >
-                <Option key="1" />
-              </Select>
-            )}
+            })(<Select mode="tags" style={{ width: '100%' }} tokenSeparators={[',', '，']} />)}
           </Form.Item>
           <Form.Item
             style={{ marginBottom: 8 }}
@@ -188,7 +212,7 @@ class Step2 extends React.PureComponent {
             }}
             label=""
           >
-            <Button type="primary" onClick={onValidateForm} loading={submitting}>
+            <Button type="primary" icon="cloud" onClick={this.onValidateForm} loading={loading}>
               上传
             </Button>
           </Form.Item>
@@ -199,8 +223,7 @@ class Step2 extends React.PureComponent {
   }
 }
 
-export default connect(({ material, courseware, loading }) => ({
-  submitting: loading.effects['material/update'],
+export default connect(({ material, courseware }) => ({
   materialData: material,
   coursewareData: courseware.data,
 }))(Step2);
