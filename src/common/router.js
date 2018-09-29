@@ -75,7 +75,7 @@ export const getRouterData = app => {
       component: dynamicWrapper(app, ['user', 'login'], () => import('../layouts/BasicLayout')),
     },
     '/resources/mine': {
-      component: dynamicWrapper(app, ['resource'], () => import('../routes/Resources/Overview')),
+      component: dynamicWrapper(app, ['statistic'], () => import('../routes/Resources/Overview')),
     },
     '/resources/mine/material/:id': {
       component: dynamicWrapper(app, ['material'], () =>
@@ -88,12 +88,12 @@ export const getRouterData = app => {
       ),
     },
     '/resources/mine/:status/:type': {
-      component: dynamicWrapper(app, ['resource', 'material', 'courseware'], () =>
+      component: dynamicWrapper(app, ['statistic', 'material', 'courseware'], () =>
         import('../routes/Resources/Overview/Resources')
       ),
     },
     '/resources/all': {
-      component: dynamicWrapper(app, ['resource'], () => import('../routes/Resources/Overview')),
+      component: dynamicWrapper(app, ['statistic'], () => import('../routes/Resources/Overview')),
     },
     '/resources/all/material/:id': {
       component: dynamicWrapper(app, ['material'], () =>
@@ -106,7 +106,7 @@ export const getRouterData = app => {
       ),
     },
     '/resources/all/:status/:type': {
-      component: dynamicWrapper(app, ['resource', 'material', 'courseware'], () =>
+      component: dynamicWrapper(app, ['statistic', 'material', 'courseware'], () =>
         import('../routes/Resources/Overview/Resources')
       ),
     },
