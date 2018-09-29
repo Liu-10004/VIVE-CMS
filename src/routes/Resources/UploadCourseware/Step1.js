@@ -6,6 +6,10 @@ import PageHeaderLayout from 'layouts/PageHeaderLayout';
 import { validateTagLength, validateThumbnails, filterArraySpace } from 'utils/utils';
 import { coursewares } from 'enums/ResourceOptions';
 
+message.config({
+  maxCount: 1,
+});
+
 const FormItem = Form.Item;
 const { TextArea } = Input;
 
@@ -51,13 +55,12 @@ export default class Step1 extends PureComponent {
         const { title, category, thumbnails, tags, label } = values;
 
         const filtertags = filterArraySpace(tags);
-        const isTagMaxLength = validateTagLength(filtertags, 10);
-        const filterlabel = filterArraySpace(label);
         const isThumbnails = validateThumbnails(thumbnails.fileList, 4, 1024 * 1024);
 
-        if (!filtertags.length || !isTagMaxLength)
-          return message.warning(`请输入有效的标签，且标签字数不超过10个字`);
-        if (!filterlabel) return message.warning(`请输入有效的年级 / 专业`);
+        if (!title.trim()) return message.warning(`标题不符合要求`);
+        if (!label.trim()) return message.warning(`年级 / 专业不符合要求`);
+        if (!validateTagLength(filtertags, 10) || !filtertags.length || filtertags.length > 7)
+          return message.warning(`标签不符合上传要求`);
         if (!isThumbnails) return message.warning(`请检查缩略图大小及个数。`);
 
         // 显示按钮的加载中状态
@@ -68,7 +71,7 @@ export default class Step1 extends PureComponent {
           title: title.trim(),
           category: category.toString(),
           tags: filtertags.toString(),
-          label: filterlabel.toString(),
+          label: label.trim(),
         };
         dispatch({
           type: 'courseware/add',
@@ -119,6 +122,7 @@ export default class Step1 extends PureComponent {
       listType: 'picture-card',
       fileList,
       multiple: true,
+      showUploadList: { showPreviewIcon: false },
       beforeUpload: this.beforeUpload,
       onPreview: this.handlePreview,
       onChange: this.handleChange,
@@ -135,7 +139,7 @@ export default class Step1 extends PureComponent {
       <PageHeaderLayout>
         <Card bordered={false}>
           <Form onSubmit={this.handleSubmit} style={{ marginTop: 8 }}>
-            <FormItem {...formItemLayout} label="课件名称" help="不超过20个汉字">
+            <FormItem {...formItemLayout} label="课件名称" help="不超过 20 个汉字">
               {getFieldDecorator('title', {
                 rules: [
                   {
@@ -153,7 +157,6 @@ export default class Step1 extends PureComponent {
                     message: '请选择类别',
                   },
                 ],
-                initialValue: ['义务教育', '科学', '物质科学'],
               })(
                 <Cascader
                   options={coursewares}
@@ -162,7 +165,7 @@ export default class Step1 extends PureComponent {
                 />
               )}
             </FormItem>
-            <FormItem {...formItemLayout} label="年级 / 专业">
+            <FormItem {...formItemLayout} label="年级 / 专业" help="不超过 20 个汉字">
               {getFieldDecorator('label', {
                 rules: [
                   {
@@ -170,13 +173,12 @@ export default class Step1 extends PureComponent {
                     message: '请输入年级 / 专业',
                   },
                 ],
-              })(<Select mode="tags" style={{ width: '100%' }} tokenSeparators={[',', '，']} />)}
+              })(<Input maxLength={20} />)}
             </FormItem>
-            <FormItem {...formItemLayout} label="合作单位" help="不超过20个汉字">
+            <FormItem {...formItemLayout} label="合作单位" help="不超过 20 个汉字">
               {getFieldDecorator('organization', {
                 rules: [
                   {
-                    required: true,
                     message: '请输入合作单位',
                   },
                 ],
@@ -185,7 +187,7 @@ export default class Step1 extends PureComponent {
             <FormItem
               {...formItemLayout}
               label="标签"
-              help="标签中不能含有空格，字数不超过10个字，最多不超过7个标签，以逗号分隔"
+              help="标签中不能含有空格，字数不超过 10 个字，最多不超过 7 个标签，以逗号分隔"
             >
               {getFieldDecorator('tags', {
                 rules: [
@@ -194,16 +196,9 @@ export default class Step1 extends PureComponent {
                     message: '请输入标签',
                   },
                 ],
-              })(
-                <Select
-                  mode="tags"
-                  style={{ width: '100%' }}
-                  maxTagCount={7}
-                  tokenSeparators={[',', '，']}
-                />
-              )}
+              })(<Select mode="tags" style={{ width: '100%' }} tokenSeparators={[',', '，']} />)}
             </FormItem>
-            <FormItem {...formItemLayout} label="课程介绍" help="不超过200个汉字">
+            <FormItem {...formItemLayout} label="课程介绍" help="不超过 200 个汉字">
               {getFieldDecorator('summary', {
                 rules: [
                   {
@@ -213,7 +208,7 @@ export default class Step1 extends PureComponent {
                 ],
               })(<TextArea style={{ minHeight: 32 }} rows={4} maxLength={200} />)}
             </FormItem>
-            <FormItem {...formItemLayout} label="缩略图" help="上传4张缩略图，大小不得超过1M.">
+            <FormItem {...formItemLayout} label="缩略图" help="上传 4 张缩略图，大小不得超过 1MB">
               {getFieldDecorator('thumbnails', {
                 rules: [
                   {
@@ -232,7 +227,7 @@ export default class Step1 extends PureComponent {
               )}
             </FormItem>
             <FormItem {...submitFormLayout} style={{ marginTop: 32 }}>
-              <Button type="primary" icon="cloud-upload" htmlType="submit" loading={loading}>
+              <Button type="primary" icon="cloud" htmlType="submit" loading={loading}>
                 上传
               </Button>
             </FormItem>
