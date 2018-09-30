@@ -24,11 +24,11 @@ const fakeMaterialDetail = ({ id }) => ({
   title: '一个素材',
   type: ['1', '2'][Math.floor(Math.random() * 2)],
   format: ['fbx', 'abm'][Math.floor(Math.random() * 2)],
-  category: ['category1', 'category2', 'category3'],
+  category: ['全景图片', '古建'],
   level: ['1', '2'][Math.floor(Math.random() * 2)],
   tags: ['tag1', 'tag2', 'tag3'],
-  coursewares: ['语文课', '数学课', '品酒课'],
-  video: '',
+  coursewares: [null, ['courseware1', 'courseware2', 'courseware3']][Math.floor(Math.random() * 2)],
+  file: 'https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png',
   thumbnails: [
     'https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png',
     'https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png',
@@ -42,6 +42,7 @@ const fakeCoursewareDetail = ({ id }) => ({
   title: '一个课件',
   format: ['fbx', 'abm'][Math.floor(Math.random() * 2)],
   category: ['category1', 'category2', 'category3'],
+  organization: [null, '北航实训基地'][Math.floor(Math.random() * 2)],
   label: ['三年级', '四年级', '五年级'],
   tags: ['tag1', 'tag2', 'tag3'],
   summary:
