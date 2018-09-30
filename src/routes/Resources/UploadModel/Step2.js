@@ -67,6 +67,14 @@ class Step2 extends React.PureComponent {
     });
   };
 
+  onPageChange = page => {
+    const { dispatch } = this.props;
+    dispatch({
+      type: 'courseware/fetch',
+      payload: { status: 1, page: page - 1 },
+    });
+  };
+
   onValidateForm = () => {
     const { form, dispatch, materialData } = this.props;
     const { validateFields } = form;
@@ -133,7 +141,8 @@ class Step2 extends React.PureComponent {
   };
 
   render() {
-    const { form, coursewareData } = this.props;
+    const { form, courseware } = this.props;
+    const { data: coursewareData, pages } = courseware;
     const { getFieldDecorator } = form;
     const { coursewareIDs, visible, loading } = this.state;
 
@@ -152,7 +161,7 @@ class Step2 extends React.PureComponent {
     return (
       <Fragment>
         <Form layout="horizontal" className={styles.stepForm}>
-          <Form.Item {...formItemLayout} label="标题" help="最多 14 个汉字">
+          <Form.Item {...formItemLayout} label="标题" help="最多 14 个字">
             {getFieldDecorator('title', {
               rules: [{ required: true, message: '请填写名称' }],
             })(<Input placeholder="请给模型起个名字" maxLength={14} />)}
@@ -193,7 +202,12 @@ class Step2 extends React.PureComponent {
               onCancel={this.handleCancel}
               footer={null}
             >
-              <CoursewareList handleSelected={this.handleSelectedData} data={coursewareData} />
+              <CoursewareList
+                handleSelected={this.handleSelectedData}
+                onPageChange={this.onPageChange}
+                data={coursewareData}
+                pages={pages}
+              />
             </Modal>
           </Form.Item>
           <Form.Item {...formItemLayout} label="标签" help="标签字数不超过 6 个字，最多 7 个标签">
@@ -225,5 +239,5 @@ class Step2 extends React.PureComponent {
 
 export default connect(({ material, courseware }) => ({
   materialData: material,
-  coursewareData: courseware.data,
+  courseware,
 }))(Step2);

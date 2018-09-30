@@ -48,7 +48,7 @@ const submitFormLayout = {
 };
 
 @connect(({ courseware }) => ({
-  coursewareData: courseware.data,
+  courseware,
 }))
 @Form.create()
 export default class Step1 extends PureComponent {
@@ -188,8 +188,17 @@ export default class Step1 extends PureComponent {
     });
   };
 
+  onPageChange = page => {
+    const { dispatch } = this.props;
+    dispatch({
+      type: 'courseware/fetch',
+      payload: { status: 1, page: page - 1 },
+    });
+  };
+
   render() {
-    const { form, coursewareData } = this.props;
+    const { form, courseware } = this.props;
+    const { data: coursewareData, pages } = courseware;
     const {
       previewImage,
       fileList,
@@ -300,13 +309,18 @@ export default class Step1 extends PureComponent {
                 onCancel={this.handleCancel}
                 footer={null}
               >
-                <CoursewareList handleSelected={this.handleSelectedData} data={coursewareData} />
+                <CoursewareList
+                  handleSelected={this.handleSelectedData}
+                  onPageChange={this.onPageChange}
+                  data={coursewareData}
+                  pages={pages}
+                />
               </Modal>
             </FormItem>
             <FormItem
               {...formItemLayout}
               label="标签"
-              help="标签中不能含有空格，字数不超过 6 个字，最多不超过 7 个标签，以逗号分隔"
+              help="标签不能为空标签，字数不超过 6 个字，最多不超过 7 个标签，以逗号分隔"
             >
               {getFieldDecorator('tags', {
                 rules: [
@@ -315,7 +329,7 @@ export default class Step1 extends PureComponent {
                     message: '请输入标签',
                   },
                 ],
-              })(<Select mode="tags" style={{ width: '100%' }} />)}
+              })(<Select mode="tags" style={{ width: '100%' }} tokenSeparators={[',', '，']} />)}
             </FormItem>
             <FormItem {...formItemLayout} label="缩略图" help="上传一张缩略图，大小不超过 1MB">
               {getFieldDecorator('thumbnails', {

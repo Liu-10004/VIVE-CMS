@@ -187,7 +187,7 @@ export default class Step1 extends PureComponent {
             <FormItem
               {...formItemLayout}
               label="标签"
-              help="标签中不能含有空格，字数不超过 10 个字，最多不超过 7 个标签，以逗号分隔"
+              help="标签不能为空标签，字数不超过 10 个字，最多不超过 7 个标签，以逗号分隔"
             >
               {getFieldDecorator('tags', {
                 rules: [
