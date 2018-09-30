@@ -27,13 +27,22 @@ class CoursewareList extends React.Component {
   };
 
   render() {
-    const { data, handleSelected } = this.props;
+    const { data, pages, handleSelected, onPageChange } = this.props;
+    const { number, totalElements } = pages;
     const { selectedRowKeys } = this.state;
     const rowSelection = {
       selectedRowKeys,
       onChange: this.onSelectChange,
     };
     const hasSelected = selectedRowKeys.length > 0;
+
+    // 分页器数据
+    const pagination = {
+      current: parseInt(number, 10) + 1, // 转为 number 类型
+      total: totalElements,
+      onChange: onPageChange,
+    };
+
     return (
       <div>
         <div style={{ marginBottom: 16 }}>
@@ -53,6 +62,7 @@ class CoursewareList extends React.Component {
           rowSelection={rowSelection}
           columns={columns}
           dataSource={data}
+          pagination={pagination}
         />
       </div>
     );
