@@ -90,7 +90,7 @@ class Step2 extends React.PureComponent {
           return;
         }
 
-        if (!validateTagLength(filterTags, 6) || tagsLength > 7 || !tagsLength) {
+        if (!validateTagLength(filterTags, 12) || tagsLength > 7 || !tagsLength) {
           message.warn('标签不符合上传要求');
           return;
         }
@@ -161,10 +161,10 @@ class Step2 extends React.PureComponent {
     return (
       <Fragment>
         <Form layout="horizontal" className={styles.stepForm}>
-          <Form.Item {...formItemLayout} label="标题" help="最多 14 个字">
+          <Form.Item {...formItemLayout} label="标题" help="最多 28 个字">
             {getFieldDecorator('title', {
               rules: [{ required: true, message: '请填写名称' }],
-            })(<Input placeholder="请给模型起个名字" maxLength={14} />)}
+            })(<Input placeholder="请给模型起个名字" maxLength={28} />)}
           </Form.Item>
           <Form.Item {...formItemLayout} label="格式">
             {getFieldDecorator('format', {
@@ -210,7 +210,7 @@ class Step2 extends React.PureComponent {
               />
             </Modal>
           </Form.Item>
-          <Form.Item {...formItemLayout} label="标签" help="标签字数不超过 6 个字，最多 7 个标签">
+          <Form.Item {...formItemLayout} label="标签" help="标签字数不超过 12 个字，最多 7 个标签">
             {getFieldDecorator('tags', {
               rules: [{ required: true, message: '请给模型指定标签' }],
             })(<Select mode="tags" style={{ width: '100%' }} tokenSeparators={[',', '，']} />)}

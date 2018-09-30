@@ -84,7 +84,7 @@ export default class Step1 extends PureComponent {
         const isFile = validateThumbnails(fileList, 1, 1024 * 1024 * 1024);
 
         if (!title.trim()) return message.warning(`标题不符合上传要求`);
-        if (!validateTagLength(filtertags, 6) || !filtertags.length || filtertags.length > 7)
+        if (!validateTagLength(filtertags, 12) || !filtertags.length || filtertags.length > 7)
           return message.warning(`标签不符合上传要求`);
         if (!isThumbnails || !isFile) return message.warning('文件或缩略图标签不符合上传要求');
 
@@ -254,7 +254,7 @@ export default class Step1 extends PureComponent {
       <PageHeaderLayout>
         <Card bordered={false}>
           <Form onSubmit={this.handleSubmit} style={{ marginTop: 8 }}>
-            <FormItem {...formItemLayout} label="名称" help="不超过 14 个汉字">
+            <FormItem {...formItemLayout} label="名称" help="不超过 28 个字">
               {getFieldDecorator('title', {
                 rules: [
                   {
@@ -262,7 +262,7 @@ export default class Step1 extends PureComponent {
                     message: '请输入名称',
                   },
                 ],
-              })(<Input maxLength={14} />)}
+              })(<Input maxLength={28} />)}
             </FormItem>
             <FormItem {...formItemLayout} label="分类">
               {getFieldDecorator('category', {
@@ -320,7 +320,7 @@ export default class Step1 extends PureComponent {
             <FormItem
               {...formItemLayout}
               label="标签"
-              help="标签不能为空标签，字数不超过 6 个字，最多不超过 7 个标签，以逗号分隔"
+              help="标签不能为空标签，字数不超过 12 个字，最多不超过 7 个标签，以逗号分隔"
             >
               {getFieldDecorator('tags', {
                 rules: [

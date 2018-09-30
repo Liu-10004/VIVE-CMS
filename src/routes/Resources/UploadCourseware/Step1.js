@@ -59,7 +59,7 @@ export default class Step1 extends PureComponent {
 
         if (!title.trim()) return message.warning(`标题不符合要求`);
         if (!label.trim()) return message.warning(`年级 / 专业不符合要求`);
-        if (!validateTagLength(filtertags, 10) || !filtertags.length || filtertags.length > 7)
+        if (!validateTagLength(filtertags, 20) || !filtertags.length || filtertags.length > 7)
           return message.warning(`标签不符合上传要求`);
         if (!isThumbnails) return message.warning(`请检查缩略图大小及个数。`);
 
@@ -139,7 +139,7 @@ export default class Step1 extends PureComponent {
       <PageHeaderLayout>
         <Card bordered={false}>
           <Form onSubmit={this.handleSubmit} style={{ marginTop: 8 }}>
-            <FormItem {...formItemLayout} label="课件名称" help="不超过 20 个汉字">
+            <FormItem {...formItemLayout} label="课件名称" help="不超过 40 个字">
               {getFieldDecorator('title', {
                 rules: [
                   {
@@ -147,7 +147,7 @@ export default class Step1 extends PureComponent {
                     message: '请输入课件名称',
                   },
                 ],
-              })(<Input maxLength={20} />)}
+              })(<Input maxLength={40} />)}
             </FormItem>
             <FormItem {...formItemLayout} label="分类">
               {getFieldDecorator('category', {
@@ -165,7 +165,7 @@ export default class Step1 extends PureComponent {
                 />
               )}
             </FormItem>
-            <FormItem {...formItemLayout} label="年级 / 专业" help="不超过 20 个汉字">
+            <FormItem {...formItemLayout} label="年级 / 专业" help="不超过 40 个字">
               {getFieldDecorator('label', {
                 rules: [
                   {
@@ -173,21 +173,21 @@ export default class Step1 extends PureComponent {
                     message: '请输入年级 / 专业',
                   },
                 ],
-              })(<Input maxLength={20} />)}
+              })(<Input maxLength={40} />)}
             </FormItem>
-            <FormItem {...formItemLayout} label="合作单位" help="不超过 20 个汉字">
+            <FormItem {...formItemLayout} label="合作单位" help="不超过 40 个字">
               {getFieldDecorator('organization', {
                 rules: [
                   {
                     message: '请输入合作单位',
                   },
                 ],
-              })(<Input maxLength={20} />)}
+              })(<Input maxLength={40} />)}
             </FormItem>
             <FormItem
               {...formItemLayout}
               label="标签"
-              help="标签不能为空标签，字数不超过 10 个字，最多不超过 7 个标签，以逗号分隔"
+              help="标签不能为空标签，字数不超过 20 个字，最多不超过 7 个标签，以逗号分隔"
             >
               {getFieldDecorator('tags', {
                 rules: [
@@ -198,7 +198,7 @@ export default class Step1 extends PureComponent {
                 ],
               })(<Select mode="tags" style={{ width: '100%' }} tokenSeparators={[',', '，']} />)}
             </FormItem>
-            <FormItem {...formItemLayout} label="课程介绍" help="不超过 200 个汉字">
+            <FormItem {...formItemLayout} label="课程介绍" help="不超过 400 个汉字">
               {getFieldDecorator('summary', {
                 rules: [
                   {
@@ -206,7 +206,7 @@ export default class Step1 extends PureComponent {
                     message: '请输入课程介绍',
                   },
                 ],
-              })(<TextArea style={{ minHeight: 32 }} rows={4} maxLength={200} />)}
+              })(<TextArea style={{ minHeight: 32 }} rows={4} maxLength={400} />)}
             </FormItem>
             <FormItem {...formItemLayout} label="缩略图" help="上传 4 张缩略图，大小不得超过 1MB">
               {getFieldDecorator('thumbnails', {
