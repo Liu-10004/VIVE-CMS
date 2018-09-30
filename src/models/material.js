@@ -99,7 +99,7 @@ export default {
 
         // 请求 ali-oss token
         const thumbnailsToken = yield call(getToken, { tokenType: 2, id: materialId });
-        const fileToken = yield call(getToken, { tokenType: 1, id: materialId });
+        const fileToken = yield call(getToken, { tokenType: 2, id: materialId });
 
         if (thumbnailsToken.message === 'success' && fileToken.message === 'success') {
           const uploadResourceResponse = yield all([
