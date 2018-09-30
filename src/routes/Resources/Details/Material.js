@@ -44,7 +44,7 @@ const Model = ({ detail, previewImage, handlePreview, onDownload }) => {
         }
       />
       <RowItem label="分类" content={category.join(' > ')} />
-      <RowItem label="所属课件" content={coursewares.join(' ，')} />
+      <RowItem label="所属课件" content={coursewares ? coursewares.join(' ，') : '暂无'} />
       <RowItem
         label="标签"
         content={tags.map(item => (
@@ -99,24 +99,27 @@ const Pano = ({ detail, previewImage, handlePreview }) => {
             <img src={thumbnail} alt="缩略图" onClick={() => handlePreview(thumbnail)} />
           </div>
         ))}
-      >
-        <Modal
-          width={780}
-          visible={!!previewImage}
-          footer={null}
-          centered
-          destroyOnClose
-          onCancel={() => handlePreview('')}
-        >
-          <img className={styles.previewImage} src={previewImage} alt="缩略图" />
-        </Modal>
-      </RowItem>
-      <div className={styles.previewVideo}>
-        {/* eslint-disable-next-line jsx-a11y/media-has-caption */}
-        <video src={file} controls>
-          <p>你的浏览器暂时不支持播放该视频</p>
-        </video>
+      />
+      <div className={styles.previewFile}>
+        {category[0] === '全景图片' ? (
+          <img src={file} alt="全景图片" onClick={() => handlePreview(file)} />
+        ) : (
+          /* eslint-disable-next-line jsx-a11y/media-has-caption */
+          <video src={file} controls>
+            <p>你的浏览器暂时不支持播放该视频</p>
+          </video>
+        )}
       </div>
+      <Modal
+        width={780}
+        visible={!!previewImage}
+        footer={null}
+        centered
+        destroyOnClose
+        onCancel={() => handlePreview('')}
+      >
+        <img className={styles.previewImage} src={previewImage} alt="缩略图" />
+      </Modal>
     </div>
   );
 };

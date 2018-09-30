@@ -1,11 +1,9 @@
 import React from 'react';
-import { Radio, Tag, Modal, Button } from 'antd';
+import { Tag, Modal, Button } from 'antd';
 import { connect } from 'dva';
-import cx from 'classnames';
 import RowItem from 'components/ResourceManager/RowItem';
 import styles from './Courseware.less';
 
-const RadioGroup = Radio.Group;
 @connect(({ courseware }) => ({ courseware }))
 class CoursewareDetail extends React.Component {
   constructor(props) {
@@ -37,17 +35,15 @@ class CoursewareDetail extends React.Component {
     if (!detail) return null;
 
     const { previewImage } = this.state;
-    const { title, category, label, tags, summary, thumbnails } = detail;
+    const { title, category, label, organization, tags, summary, thumbnails } = detail;
 
     return (
       <div className={styles.container}>
         <div className={styles.content}>
           <RowItem label="课件名称" content={title} />
           <RowItem label="分类" content={category.join(' > ')} />
-          <RowItem
-            label="年级/专业"
-            content={label.join('，')}
-          />
+          <RowItem label="年级 / 专业" content={label.join('，')} />
+          <RowItem label="合作单位" content={organization || '暂无'} />
           <RowItem
             label="标签"
             content={tags.map(item => (
@@ -58,6 +54,7 @@ class CoursewareDetail extends React.Component {
           <RowItem
             label="缩略图"
             content={thumbnails.map((thumbnail, index) => (
+              // eslint-disable-next-line react/no-array-index-key
               <div className={styles.thumbnail} key={`${thumbnail}${index}`}>
                 <img
                   src={thumbnail}
