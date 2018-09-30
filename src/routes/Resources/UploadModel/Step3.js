@@ -1,7 +1,7 @@
 import React, { Fragment } from 'react';
 import { connect } from 'dva';
 import { Button } from 'antd';
-import { routerRedux } from 'dva/router';
+import { routerRedux, Link } from 'dva/router';
 import Result from 'components/Result';
 import styles from './style.less';
 
@@ -19,6 +19,9 @@ class Step3 extends React.PureComponent {
       <Fragment>
         <Button type="primary" onClick={onFinish}>
           继续上传
+        </Button>
+        <Button type="danger">
+          <Link to="/resources/mine">返回</Link>
         </Button>
       </Fragment>
     );
