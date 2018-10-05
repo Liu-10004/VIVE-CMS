@@ -77,6 +77,11 @@ export const getRouterData = app => {
     '/resources/mine': {
       component: dynamicWrapper(app, ['statistic'], () => import('../routes/Resources/Overview')),
     },
+    '/resources/mine/material/edit/:id': {
+      component: dynamicWrapper(app, ['material'], () =>
+        import('../routes/Resources/Edit/Material')
+      ),
+    },
     '/resources/mine/material/:id': {
       component: dynamicWrapper(app, ['material'], () =>
         import('../routes/Resources/Details/Material')
@@ -98,6 +103,11 @@ export const getRouterData = app => {
     '/resources/all/material/verify/:id': {
       component: dynamicWrapper(app, ['material'], () =>
         import('../routes/Resources/VerifyMaterial')
+      ),
+    },
+    '/resources/all/material/edit/:id': {
+      component: dynamicWrapper(app, ['material'], () =>
+        import('../routes/Resources/Edit/Material')
       ),
     },
     '/resources/all/material/:id': {

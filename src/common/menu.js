@@ -17,6 +17,11 @@ const menuData = [
         hideInMenu: true,
       },
       {
+        name: '修改',
+        path: 'all/material/edit/:id',
+        hideInMenu: true,
+      },
+      {
         name: '素材详情',
         path: 'all/material/:id',
         hideInMenu: true,
@@ -29,6 +34,11 @@ const menuData = [
       {
         name: '我的素材',
         path: 'mine',
+      },
+      {
+        name: '修改',
+        path: 'mine/material/edit/:id',
+        hideInMenu: true,
       },
       {
         name: '素材详情',
