@@ -220,3 +220,9 @@ export function parsePath(pathname) {
 export function filterArraySpace(values) {
   return values.map(item => item.trim()).filter(item => !(!item || item === ''));
 }
+
+export function uniqueArray(array, key) {
+  return array.filter((element, index) => {
+    return array.map(item => item[key]).indexOf(element[key]) === index;
+  });
+}
