@@ -72,18 +72,18 @@ export default class Step1 extends React.PureComponent {
         validateFile(zip, 1024 * 1024 * 1024, ['rar', 'zip'])
       );
 
-      if (!isRequireThumbnails || !isRequireFiles || zipList.length > 1) {
-        message.warn('请检查上传的模型和缩略图文件的大小和格式');
-      } else {
-        dispatch({
-          type: 'material/saveUploadFiles',
-          payload: {
-            thumbnails: fileList,
-            files: zipList,
-          },
-        });
-        dispatch(routerRedux.push('/resources/upload-model/step2'));
+      if (zipList.length !== 1 || !isRequireFiles || !isRequireThumbnails) {
+        return message.warn('请按要求上传模型或缩略图');
       }
+
+      dispatch({
+        type: 'material/saveUploadFiles',
+        payload: {
+          thumbnails: fileList,
+          files: zipList,
+        },
+      });
+      dispatch(routerRedux.push('/resources/upload-model/step2'));
     };
 
     const uploadButton = (
