@@ -175,6 +175,7 @@ export default {
           type: 'saveDetail',
           payload: response.data,
         });
+        return response;
       }
     },
 

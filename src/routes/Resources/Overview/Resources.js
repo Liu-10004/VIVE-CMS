@@ -335,7 +335,7 @@ class ResourceList extends React.Component {
                   <Button
                     type="primary"
                     size="small"
-                    onClick={() => dispatch(routerRedux.push(`${basePath}/${record.id}/verify`))}
+                    onClick={() => dispatch(routerRedux.push(`${basePath}/verify/${record.id}`))}
                   >
                     审批
                   </Button>

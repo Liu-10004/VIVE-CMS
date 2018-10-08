@@ -12,6 +12,11 @@ const menuData = [
         authority: 'admin',
       },
       {
+        name: '审核',
+        path: 'all/material/verify/:id',
+        hideInMenu: true,
+      },
+      {
         name: '素材详情',
         path: 'all/material/:id',
         hideInMenu: true,

@@ -95,6 +95,11 @@ export const getRouterData = app => {
     '/resources/all': {
       component: dynamicWrapper(app, ['statistic'], () => import('../routes/Resources/Overview')),
     },
+    '/resources/all/material/verify/:id': {
+      component: dynamicWrapper(app, ['material'], () =>
+        import('../routes/Resources/VerifyMaterial')
+      ),
+    },
     '/resources/all/material/:id': {
       component: dynamicWrapper(app, ['material'], () =>
         import('../routes/Resources/Details/Material')

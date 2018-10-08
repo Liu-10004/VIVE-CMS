@@ -17,7 +17,7 @@ import {
 } from 'antd';
 import PageHeaderLayout from 'layouts/PageHeaderLayout';
 import CoursewareList from 'components/CoursewareTable';
-import { validateTagLength, validateThumbnails, filterArraySpace } from 'utils/utils';
+import { validateTagLength, validateThumbnails, filterArraySpace, uniqueArray } from 'utils/utils';
 import { panoramas } from 'enums/ResourceOptions';
 
 message.config({
@@ -58,7 +58,7 @@ export default class Step1 extends PureComponent {
       previewImage: '',
       fileList: [],
       modelVisible: false,
-      coursewareIDs: [],
+      coursewares: [],
       loading: false,
       resourceType: '全景图片',
     };
@@ -70,7 +70,7 @@ export default class Step1 extends PureComponent {
 
     form.validateFieldsAndScroll((err, values) => {
       if (!err) {
-        const { coursewareIDs } = this.state;
+        const { coursewares } = this.state;
         const {
           thumbnails: { fileList: thumbnailList },
           file: { fileList },
@@ -102,7 +102,9 @@ export default class Step1 extends PureComponent {
           format: name.split('.').slice(-1)[0],
           category: category.toString(),
           tags: filtertags.toString(),
-          coursewareIDs: !coursewareIDs.length ? null : coursewareIDs.toString(),
+          coursewareIDs: !coursewares.length
+            ? null
+            : coursewares.map(courseware => courseware.id).toString(),
           size,
           thumbnails,
           file,
@@ -184,7 +186,7 @@ export default class Step1 extends PureComponent {
   handleSelectedData = data => {
     this.handleCancel();
     this.setState({
-      coursewareIDs: data,
+      coursewares: data,
     });
   };
 
@@ -196,30 +198,20 @@ export default class Step1 extends PureComponent {
     });
   };
 
+  selectedCoursewares = coursewares => {
+    const uniqueCoursewares = uniqueArray(coursewares, 'id');
+    return uniqueCoursewares.map(courseware => (
+      <Tag closable color="blue" key={courseware}>
+        {courseware.title}
+      </Tag>
+    ));
+  };
+
   render() {
     const { form, courseware } = this.props;
     const { data: coursewareData, pages } = courseware;
-    const {
-      previewImage,
-      fileList,
-      modelVisible,
-      coursewareIDs,
-      loading,
-      resourceType,
-    } = this.state;
+    const { previewImage, fileList, modelVisible, coursewares, loading, resourceType } = this.state;
     const { getFieldDecorator } = form;
-
-    let coursewares;
-    if (coursewareIDs) {
-      coursewares = coursewareIDs.map(id => {
-        const index = coursewareIDs.indexOf(id);
-        return (
-          <Tag closable key={id}>
-            {coursewareData[index].title}
-          </Tag>
-        );
-      });
-    }
 
     const uploadProps = {
       name: 'thumbnails',
@@ -299,7 +291,7 @@ export default class Step1 extends PureComponent {
               )}
             </FormItem>
             <FormItem {...formItemLayout} label="所属课件">
-              {coursewares}
+              {coursewares.length ? this.selectedCoursewares(coursewares) : null}
               <Tag onClick={this.showModal} style={{ background: '#fff', borderStyle: 'dashed' }}>
                 <Icon type="plus" /> 选择课件
               </Tag>

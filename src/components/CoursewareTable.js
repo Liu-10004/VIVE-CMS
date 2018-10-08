@@ -26,8 +26,17 @@ class CoursewareList extends React.Component {
     this.setState({ selectedRowKeys });
   };
 
+  onSelected = () => {
+    const { handleSelected } = this.props;
+    const { selectedRowKeys } = this.state;
+    handleSelected(selectedRowKeys);
+    this.setState({
+      selectedRowKeys: [],
+    });
+  };
+
   render() {
-    const { data, pages, handleSelected, onPageChange } = this.props;
+    const { data, pages, onPageChange } = this.props;
     const { number, totalElements } = pages;
     const { selectedRowKeys } = this.state;
     const rowSelection = {
@@ -46,11 +55,7 @@ class CoursewareList extends React.Component {
     return (
       <div>
         <div style={{ marginBottom: 16 }}>
-          <Button
-            type="primary"
-            onClick={() => handleSelected(selectedRowKeys)}
-            disabled={!hasSelected}
-          >
+          <Button type="primary" onClick={this.onSelected} disabled={!hasSelected}>
             确认选择
           </Button>
           <span style={{ marginLeft: 8 }}>
@@ -58,7 +63,7 @@ class CoursewareList extends React.Component {
           </span>
         </div>
         <Table
-          rowKey={record => record.id}
+          rowKey={record => record}
           rowSelection={rowSelection}
           columns={columns}
           dataSource={data}

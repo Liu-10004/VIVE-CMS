@@ -16,7 +16,7 @@ import {
 import { routerRedux } from 'dva/router';
 import CoursewareList from 'components/CoursewareTable';
 import { models } from 'enums/ResourceOptions';
-import { filterArraySpace, validateTagLength } from 'utils/utils';
+import { filterArraySpace, validateTagLength, uniqueArray } from 'utils/utils';
 import styles from './style.less';
 
 const formItemLayout = {
@@ -34,17 +34,26 @@ message.config({
 
 @Form.create()
 class Step2 extends React.PureComponent {
-  state = { visible: false, coursewareIDs: [], loading: false };
+  state = { visible: false, coursewares: [], loading: false };
 
-  showModal = () => {
-    const { dispatch } = this.props;
+  handleCoursewareModal = () => {
     this.setState({
       visible: true,
     });
 
+    this.fetchCoursewares({});
+  };
+
+  onPageChange = page => {
+    this.fetchCoursewares({ page: page - 1 });
+  };
+
+  fetchCoursewares = payload => {
+    const { dispatch } = this.props;
+
     dispatch({
       type: 'courseware/fetch',
-      payload: { status: 1 },
+      payload: Object.assign(payload, { status: 1 }),
     });
   };
 
@@ -63,22 +72,23 @@ class Step2 extends React.PureComponent {
   handleSelectedData = data => {
     this.handleCancel();
     this.setState({
-      coursewareIDs: data,
+      coursewares: data,
     });
   };
 
-  onPageChange = page => {
-    const { dispatch } = this.props;
-    dispatch({
-      type: 'courseware/fetch',
-      payload: { status: 1, page: page - 1 },
-    });
+  selectedCoursewares = coursewares => {
+    const uniqueCoursewares = uniqueArray(coursewares, 'id');
+    return uniqueCoursewares.map(courseware => (
+      <Tag closable color="blue" key={courseware}>
+        {courseware.title}
+      </Tag>
+    ));
   };
 
   onValidateForm = () => {
     const { form, dispatch, materialData } = this.props;
     const { validateFields } = form;
-    const { coursewareIDs } = this.state;
+    const { coursewares } = this.state;
     validateFields((err, values) => {
       if (!err) {
         const { title, tags, category } = values;
@@ -107,7 +117,9 @@ class Step2 extends React.PureComponent {
           },
           { tags: filterTags.toString(), category: category.toString() },
           {
-            coursewareIDs: !coursewareIDs.length ? null : coursewareIDs.toString(),
+            coursewareIDs: !coursewares.length
+              ? null
+              : coursewares.map(courseware => courseware.id).toString(),
           },
           {
             type: 1,
@@ -144,19 +156,7 @@ class Step2 extends React.PureComponent {
     const { form, courseware } = this.props;
     const { data: coursewareData, pages } = courseware;
     const { getFieldDecorator } = form;
-    const { coursewareIDs, visible, loading } = this.state;
-
-    let coursewares;
-    if (coursewareIDs) {
-      coursewares = coursewareIDs.map(id => {
-        const index = coursewareIDs.indexOf(id);
-        return (
-          <Tag closable key={id}>
-            {coursewareData[index].title}
-          </Tag>
-        );
-      });
-    }
+    const { coursewares, visible, loading } = this.state;
 
     return (
       <Fragment>
@@ -192,8 +192,11 @@ class Step2 extends React.PureComponent {
             })(<Cascader options={models} style={{ width: '100%' }} placeholder="请选择分类" />)}
           </Form.Item>
           <Form.Item {...formItemLayout} label="所属课件">
-            {coursewares}
-            <Tag onClick={this.showModal} style={{ background: '#fff', borderStyle: 'dashed' }}>
+            {coursewares.length ? this.selectedCoursewares(coursewares) : null}
+            <Tag
+              onClick={this.handleCoursewareModal}
+              style={{ background: '#fff', borderStyle: 'dashed' }}
+            >
               <Icon type="plus" /> 选择课件
             </Tag>
             <Modal
