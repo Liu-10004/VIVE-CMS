@@ -52,7 +52,7 @@ const Model = ({ detail, previewImage, handlePreview, onDownload }) => {
         ))}
       />
       <RowItem
-        className={cx(styles.thumbnails)}
+        className={styles.thumbnails}
         label="缩略图"
         content={thumbnails.map((thumbnail, index) => (
           // eslint-disable-next-line react/no-array-index-key
@@ -85,7 +85,7 @@ const Pano = ({ detail, previewImage, handlePreview }) => {
       <RowItem label="名称" content={title} />
       <RowItem label="分类" content={category.join(' > ')} />
       <RowItem
-        label="分类"
+        label="标签"
         content={tags.map(item => (
           <Tag key={item}>{item}</Tag>
         ))}
@@ -177,7 +177,7 @@ class MaterialDetail extends React.Component {
 
     return (
       <div className={styles.container}>
-        {type === '1' ? (
+        {type === 1 ? (
           <Model
             detail={detail}
             previewImage={previewImage}

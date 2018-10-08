@@ -22,7 +22,7 @@ const fakeResource = ({ status }) => ({
 const fakeMaterialDetail = ({ id }) => ({
   id,
   title: '一个素材',
-  type: ['1', '2'][Math.floor(Math.random() * 2)],
+  type: [1, 2][Math.floor(Math.random() * 2)],
   format: ['fbx', 'abm'][Math.floor(Math.random() * 2)],
   category: ['全景图片', '古建'],
   level: ['1', '2'][Math.floor(Math.random() * 2)],
