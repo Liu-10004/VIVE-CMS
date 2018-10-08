@@ -353,7 +353,7 @@ class ResourceList extends React.Component {
                     <Button
                       type="primary"
                       size="small"
-                      onClick={() => dispatch(routerRedux.push(`${basePath}/${record.id}/edit`))}
+                      onClick={() => dispatch(routerRedux.push(`${basePath}/edit/${record.id}`))}
                     >
                       修改
                     </Button>
@@ -393,7 +393,7 @@ class ResourceList extends React.Component {
                 <Button
                   type="primary"
                   size="small"
-                  onClick={() => dispatch(routerRedux.push(`${basePath}/${record.id}/edit`))}
+                  onClick={() => dispatch(routerRedux.push(`${basePath}/edit/${record.id}`))}
                 >
                   修改
                 </Button>
@@ -402,7 +402,7 @@ class ResourceList extends React.Component {
                   <Button
                     type="primary"
                     size="small"
-                    onClick={() => dispatch(routerRedux.push(`${basePath}/${record.id}/edit`))}
+                    onClick={() => dispatch(routerRedux.push(`${basePath}/edit/${record.id}`))}
                   >
                     修改
                   </Button>

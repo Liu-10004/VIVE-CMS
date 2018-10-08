@@ -136,8 +136,18 @@ class Step2 extends React.PureComponent {
         })
           .then(data => {
             return dispatch({
-              type: 'material/update',
+              type: 'material/upload',
               payload: data,
+            });
+          })
+          .then(data => {
+            const {
+              uploadFiles: { id, file },
+              uploadThumbnails: { thumbnails },
+            } = data;
+            return dispatch({
+              type: 'material/update',
+              payload: { id, file, thumbnails },
             });
           })
           .then(() => {

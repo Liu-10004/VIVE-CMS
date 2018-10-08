@@ -34,55 +34,78 @@ export default {
       }
     },
 
-    *addModel({ payload }, { call, all, select }) {
-      const addMaterialResponse = yield call(addMaterial, payload);
+    *addModel({ payload }, { call }) {
+      const response = yield call(addMaterial, payload);
 
-      if (addMaterialResponse.message === 'success') {
-        const materialID = addMaterialResponse.data;
-        const params = { id: materialID };
+      if (response.message === 'success') {
+        return response;
+      }
+    },
 
-        const thumbnailToken = yield call(getToken, { tokenType: 2, id: materialID });
-        const fileToken = yield call(getToken, { tokenType: 1, id: materialID });
+    *upload({ payload }, { put }) {
+      const uploadThumbnails = yield put.resolve({
+        type: 'uploadThumbnail',
+        payload,
+      });
+      const uploadFiles = yield put.resolve({
+        type: 'uploadFile',
+        payload,
+      });
 
-        if (thumbnailToken.message === 'success') {
-          const { thumbnails } = yield select(state => state.material);
-          const thumbnailsResponse = yield all(
-            thumbnails.map(thumbnail =>
-              call(uploadResource, {
-                file: thumbnail.originFileObj,
-                token: thumbnailToken.data,
-              })
-            )
-          );
+      return { uploadFiles, uploadThumbnails };
+    },
 
-          if (thumbnailsResponse.every(thumbnail => thumbnail.message === 'success')) {
-            Object.assign(params, {
-              thumbnails: thumbnails.map(thumbnail => thumbnail.name).toString(),
+    *uploadThumbnail({ payload }, { call, select }) {
+      const { data: id } = payload;
+      const token = yield call(getToken, { tokenType: 2, id });
+
+      if (token.message === 'success') {
+        const { thumbnails } = yield select(state => state.material);
+        const thumbnailList = [];
+
+        for (let i = 0; i < thumbnails.length; i += 1) {
+          if (thumbnails[i].originFileObj) {
+            const response = yield call(uploadResource, {
+              file: thumbnails[i].originFileObj,
+              token: token.data,
             });
+
+            if (response.message === 'success') {
+              thumbnailList.push(thumbnails[i].name);
+            }
+          } else {
+            thumbnailList.push(thumbnails[i].name);
           }
         }
 
-        if (fileToken.message === 'success') {
-          const { files } = yield select(state => state.material);
-          const fileResponse = yield all(
-            files.map(file =>
-              call(uploadResource, {
-                file,
-                token: fileToken.data,
-              })
-            )
-          );
+        return { id, thumbnails: thumbnailList.toString() };
+      }
+    },
 
-          if (fileResponse.every(file => file.message === 'success')) {
-            Object.assign(params, {
-              file: files[0].name,
+    *uploadFile({ payload }, { call, select }) {
+      const { data: id } = payload;
+      const fileToken = yield call(getToken, { tokenType: 1, id });
+
+      if (fileToken.message === 'success') {
+        const { files } = yield select(state => state.material);
+        const fileList = [];
+
+        for (let i = 0; i < files.length; i += 1) {
+          if (files[i] instanceof File) {
+            const response = yield call(uploadResource, {
+              file: files[i],
+              token: fileToken.data,
             });
+
+            if (response.message === 'success') {
+              fileList.push(files[i].name);
+            }
+          } else {
+            fileList.push(files[i].name);
           }
         }
 
-        if ('thumbnails' in params && 'file' in params) {
-          return params;
-        }
+        return { id, file: fileList.toString() };
       }
     },
 
