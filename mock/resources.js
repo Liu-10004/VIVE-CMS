@@ -27,7 +27,14 @@ const fakeMaterialDetail = ({ id }) => ({
   category: ['全景图片', '古建'],
   level: ['1', '2'][Math.floor(Math.random() * 2)],
   tags: ['tag1', 'tag2', 'tag3'],
-  coursewares: [null, ['courseware1', 'courseware2', 'courseware3']][Math.floor(Math.random() * 2)],
+  coursewares: [
+    null,
+    [
+      fakeCoursewareDetail({ id: 'resource00' }),
+      fakeCoursewareDetail({ id: 'resource01' }),
+      fakeCoursewareDetail({ id: 'resource02' }),
+    ],
+  ][Math.floor(Math.random() * 2)],
   file: 'https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png',
   thumbnails: [
     'https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png',
@@ -40,7 +47,6 @@ const fakeMaterialDetail = ({ id }) => ({
 const fakeCoursewareDetail = ({ id }) => ({
   id,
   title: '一个课件',
-  format: ['fbx', 'abm'][Math.floor(Math.random() * 2)],
   category: ['category1', 'category2', 'category3'],
   organization: [null, '北航实训基地'][Math.floor(Math.random() * 2)],
   label: ['三年级', '四年级', '五年级'],
