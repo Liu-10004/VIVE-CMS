@@ -127,7 +127,7 @@ class ResourceList extends React.Component {
 
     dispatch({
       type: `${category}/${operate}`,
-      payload: operate === 'update' ? { id, status: '4' } : { id },
+      payload: operate === 'update' ? { id, status: 4 } : { id },
     }).then(response => {
       if (response.message === 'success') {
         dispatch({
@@ -322,7 +322,7 @@ class ResourceList extends React.Component {
           ? [
               {
                 title: '上传账号',
-                dataIndex: 'uploder',
+                dataIndex: 'uploader',
                 key: 'uploader',
                 align: 'center',
               },

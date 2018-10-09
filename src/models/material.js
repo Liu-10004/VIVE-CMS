@@ -154,7 +154,7 @@ export default {
       const response = yield call(updateMaterial, payload);
 
       if (response.message === 'success') {
-        if (payload.status === '4') {
+        if (payload.status === 4) {
           const material = yield select(state => state.material);
           const { data: dataSource, pages } = material;
 

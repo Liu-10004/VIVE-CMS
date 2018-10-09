@@ -1,11 +1,9 @@
 import React from 'react';
 import { connect } from 'dva';
 import cx from 'classnames';
-import { Tag, Modal, Radio, Button, Icon } from 'antd';
+import { Tag, Modal, Button, Icon } from 'antd';
 import RowItem from 'components/ResourceManager/RowItem';
 import styles from './Material.less';
-
-const RadioGroup = Radio.Group;
 
 const Download = ({ className, name, onClick }) => (
   <div className={cx(styles.download, className)}>
@@ -25,26 +23,13 @@ const Model = ({ detail, previewImage, handlePreview, onDownload }) => {
   return (
     <div className={styles.model}>
       <RowItem label="名称" content={title} />
-      <RowItem
-        label="格式"
-        content={
-          <RadioGroup value={format}>
-            <Radio value="fbx">fbx</Radio>
-            <Radio value="abm">abm</Radio>
-          </RadioGroup>
-        }
-      />
-      <RowItem
-        label="级别"
-        content={
-          <RadioGroup value={level}>
-            <Radio value="1">精品</Radio>
-            <Radio value="2">普通</Radio>
-          </RadioGroup>
-        }
-      />
+      <RowItem label="格式" content={format} />
+      <RowItem label="级别" content={parseInt(level, 10) === 1 ? '精品' : '普通'} />
       <RowItem label="分类" content={category.join(' > ')} />
-      <RowItem label="所属课件" content={coursewares ? coursewares.join(' ，') : '暂无'} />
+      <RowItem
+        label="所属课件"
+        content={coursewares ? coursewares.map(item => item.title).join(' ，') : '暂无'}
+      />
       <RowItem
         label="标签"
         content={tags.map(item => (
@@ -78,12 +63,17 @@ const Model = ({ detail, previewImage, handlePreview, onDownload }) => {
 };
 
 const Pano = ({ detail, previewImage, handlePreview }) => {
-  const { title, category, tags, thumbnails, file } = detail;
+  const { title, category, level, coursewares, tags, thumbnails, file } = detail;
 
   return (
     <div className={styles.pano}>
       <RowItem label="名称" content={title} />
       <RowItem label="分类" content={category.join(' > ')} />
+      <RowItem label="级别" content={parseInt(level, 10) === 1 ? '精品' : '普通'} />
+      <RowItem
+        label="所属课件"
+        content={coursewares ? coursewares.map(item => item.title).join(' ，') : '暂无'}
+      />
       <RowItem
         label="标签"
         content={tags.map(item => (
