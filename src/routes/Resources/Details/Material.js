@@ -5,6 +5,8 @@ import { Tag, Modal, Button, Icon } from 'antd';
 import RowItem from 'components/ResourceManager/RowItem';
 import styles from './Material.less';
 
+const TOKEN_TYPE = 0;
+
 const Download = ({ className, name, onClick }) => (
   <div className={cx(styles.download, className)}>
     <div className={styles.link}>
@@ -18,7 +20,7 @@ const Download = ({ className, name, onClick }) => (
 );
 
 const Model = ({ detail, previewImage, handlePreview, onDownload }) => {
-  const { id, type, title, format, category, level, coursewares, tags, thumbnails, file } = detail;
+  const { id, title, format, category, level, coursewares, tags, thumbnails, file } = detail;
 
   return (
     <div className={styles.model}>
@@ -57,7 +59,7 @@ const Model = ({ detail, previewImage, handlePreview, onDownload }) => {
           <img className={styles.previewImage} src={previewImage} alt="缩略图" />
         </Modal>
       </RowItem>
-      <Download className={styles.item} name={file} onClick={() => onDownload(id, type)} />
+      <Download className={styles.item} name={file} onClick={() => onDownload(id, file)} />
     </div>
   );
 };
@@ -142,15 +144,15 @@ class MaterialDetail extends React.Component {
     });
   };
 
-  onDownload = (id, type) => {
+  onDownload = (id, fileName) => {
     const { dispatch } = this.props;
 
     dispatch({
       type: 'material/download',
-      payload: { id, type },
-    }).then(({ data }) => {
+      payload: { id, tokenType: TOKEN_TYPE, fileName },
+    }).then(downloadURL => {
       // @see https://github.com/vivedu/VIVEDU-Store/issues/264
-      window.location.href = data;
+      window.location.href = downloadURL;
     });
   };
 
