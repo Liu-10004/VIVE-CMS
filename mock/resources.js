@@ -8,15 +8,15 @@ const fakeStatus = (min = 100, max = 1000) =>
     {}
   );
 
-const fakeResource = ({ status }) => ({
+const fakeResource = () => ({
   title: '一个素材',
   thumbnails: [
     'https://vivedu-courseware.oss-cn-beijing.aliyuncs.com/2c9281895d688ccb015d742a04720000/cover-cover.jpg?Expires=1536836217&OSSAccessKeyId=TMP.AQHAMfs3VYYsXPhP-3GXZgNoVfBx1aKAJCh_h2KOyEzJEzUYuJercZDrvefaAAAwLAIUCcR72JRpiythCW3w9U_iN5mneeUCFAkXyt6KFHOL1_STDw1ZreRobR0Q&Signature=njZU8M8w18RMt%2BZzBwKQm%2FncOAs%3D',
   ],
   category: ['义务教育', '科学', '物质科学'],
   date: 'Tue Sep 11 2018 16:28:08 GMT+0800 (中国标准时间)',
-  uploader: status === 'PASSING' ? 'manager@vivedu.com' : undefined,
-  reason: status === 'UNPASSED' ? '描述不对' : undefined,
+  uploader: 'manager@vivedu.com',
+  reason: '描述不对',
 });
 
 const fakeMaterialDetail = ({ id }) => ({
@@ -75,7 +75,7 @@ const getResources = (req, res, u) => {
   const pageSize = params.pageSize || 20;
 
   for (let i = 0; i < pageSize; i += 1) {
-    const resource = Object.assign({}, { id: `resource${params.page}${i}` }, fakeResource(params));
+    const resource = Object.assign({}, { id: `resource${params.page}${i}` }, fakeResource());
 
     resourceList.push(resource);
   }

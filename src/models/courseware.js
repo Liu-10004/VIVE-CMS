@@ -74,7 +74,7 @@ export default {
 
       // 下架
       if (response.message === 'success') {
-        if (payload.status === '4') {
+        if (payload.status === 4) {
           const courseware = yield select(state => state.courseware);
           const { data: dataSource, pages } = courseware;
 
