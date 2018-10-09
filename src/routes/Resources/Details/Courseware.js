@@ -76,7 +76,7 @@ class CoursewareDetail extends React.Component {
             </Modal>
           </RowItem>
           <div className={styles.actions}>
-            <Button className={styles.goBack} type="primary" onClick={() => history.goBack()}>
+            <Button type="primary" onClick={() => history.goBack()}>
               返回
             </Button>
           </div>

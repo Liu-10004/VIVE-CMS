@@ -13,7 +13,7 @@ const Download = ({ className, name, onClick }) => (
       <Icon type="link" theme="outlined" />
       <span>{name}</span>
     </div>
-    <Button className={styles.goBack} type="primary" size="small" onClick={onClick}>
+    <Button type="primary" size="small" onClick={onClick}>
       下载
     </Button>
   </div>
@@ -184,7 +184,7 @@ class MaterialDetail extends React.Component {
           />
         )}
         <div className={styles.actions}>
-          <Button className={styles.goBack} type="primary" onClick={() => history.goBack()}>
+          <Button type="primary" onClick={() => history.goBack()}>
             返回
           </Button>
         </div>
