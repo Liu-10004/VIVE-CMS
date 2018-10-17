@@ -204,13 +204,15 @@ export default {
 
     // 下载模型
     *download({ payload }, { call }) {
-      const { id, type } = payload;
-      const response = yield call(getToken, { id, tokenType: type });
+      const { id, tokenType, fileName } = payload;
+      const response = yield call(getToken, { id, tokenType });
 
       if (response.message === 'failed') {
         message.error(response.message);
       } else {
-        return downloadModel(response.data);
+        const { data } = response;
+        data.key = `${data.key}${fileName}`;
+        return downloadModel(data);
       }
     },
   },

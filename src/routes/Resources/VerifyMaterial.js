@@ -6,6 +6,8 @@ import { models } from 'enums/ResourceOptions';
 import { filterArraySpace, validateTagLength, uniqueArray } from 'utils/utils';
 import styles from './VerifyMaterial.less';
 
+const TOKEN_TYPE = 0;
+
 const formItemLayout = {
   labelCol: {
     span: 5,
@@ -119,12 +121,12 @@ class VerifyMaterial extends React.PureComponent {
     return files;
   };
 
-  onDownload = (id, type) => {
+  onDownload = (id, fileName) => {
     const { dispatch } = this.props;
 
     dispatch({
       type: 'material/download',
-      payload: { id, type },
+      payload: { id, tokenType: TOKEN_TYPE, fileName },
     }).then(downloadURL => {
       // @see https://github.com/vivedu/VIVEDU-Store/issues/264
       window.location.href = downloadURL;
@@ -212,7 +214,6 @@ class VerifyMaterial extends React.PureComponent {
     const { coursewares, visible, previewImage, previewVisible } = this.state;
     const materialDetail = material.detail;
     const materialID = pathname.split('/').slice(-1)[0];
-    const tokenType = 0;
 
     return (
       <Fragment>
@@ -301,7 +302,7 @@ class VerifyMaterial extends React.PureComponent {
             <Button
               className={styles.btn}
               type="primary"
-              onClick={() => this.onDownload(materialID, tokenType)}
+              onClick={() => this.onDownload(materialID, materialDetail.file)}
             >
               下载
             </Button>
