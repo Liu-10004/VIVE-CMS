@@ -21,6 +21,7 @@ import {
   uniqueArray,
   validateFile,
   validateThumbnails,
+  parsePath,
 } from 'utils/utils';
 import styles from './style.less';
 
@@ -179,6 +180,7 @@ class Step2 extends React.PureComponent {
     const { validateFields } = form;
     const { coursewares, fileList, zipList } = this.state;
     const id = pathname.split('/').slice(-1)[0];
+    const { isAdmin } = parsePath(pathname);
 
     validateFields((err, values) => {
       if (!err) {
@@ -232,7 +234,7 @@ class Step2 extends React.PureComponent {
             type: 1,
           },
           {
-            status: 2,
+            status: isAdmin ? 1 : 2,
           }
         );
 
