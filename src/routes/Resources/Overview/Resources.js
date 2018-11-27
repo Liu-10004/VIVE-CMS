@@ -496,7 +496,8 @@ class ResourceList extends React.Component {
             return (
               <TabPane
                 key={resourceStatus.toLowerCase()}
-                tab={`${tabName}(${count[resourceStatus]})`}
+                // TODO Show status count
+                tab={tabName}
               />
             );
           })}
