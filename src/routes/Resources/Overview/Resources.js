@@ -64,7 +64,7 @@ class ResourceList extends React.Component {
         title: '类型',
         dataIndex: 'category',
         key: 'category',
-        render: (_, record) => record.category && record.category[0],
+        render: (_, record) => record.category && record.category[1],
       },
       {
         title: '上传时间',
