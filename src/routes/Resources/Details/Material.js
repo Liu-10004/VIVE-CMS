@@ -25,7 +25,7 @@ const Model = ({ detail, previewImage, handlePreview, onDownload }) => {
   return (
     <div className={styles.model}>
       <RowItem label="名称" content={title} />
-      <RowItem label="格式" content={format} />
+      <RowItem label="格式" content={format.join(' / ')} />
       <RowItem label="级别" content={parseInt(level, 10) === 1 ? '精品' : '普通'} />
       <RowItem label="分类" content={category.join(' > ')} />
       <RowItem
@@ -34,9 +34,7 @@ const Model = ({ detail, previewImage, handlePreview, onDownload }) => {
       />
       <RowItem
         label="标签"
-        content={tags.map(item => (
-          <Tag key={item}>{item}</Tag>
-        ))}
+        content={tags ? tags.map(item => <Tag key={item}>{item}</Tag>) : '暂无'}
       />
       <RowItem
         className={styles.thumbnails}
@@ -49,7 +47,7 @@ const Model = ({ detail, previewImage, handlePreview, onDownload }) => {
         ))}
       >
         <Modal
-          width={780}
+          width={848}
           visible={!!previewImage}
           footer={null}
           centered
@@ -78,9 +76,7 @@ const Pano = ({ detail, previewImage, handlePreview }) => {
       />
       <RowItem
         label="标签"
-        content={tags.map(item => (
-          <Tag key={item}>{item}</Tag>
-        ))}
+        content={tags ? tags.map(item => <Tag key={item}>{item}</Tag>) : '暂无'}
       />
       <RowItem
         className={styles.thumbnails}
@@ -103,7 +99,7 @@ const Pano = ({ detail, previewImage, handlePreview }) => {
         )}
       </div>
       <Modal
-        width={780}
+        width={848}
         visible={!!previewImage}
         footer={null}
         centered

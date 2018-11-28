@@ -100,7 +100,7 @@ export default class Step1 extends PureComponent {
           title: title.trim(),
           type: 2, // 资源的类型，1 是 model & scene，2 是 全景视频 & 全景图片
           format: name.split('.').slice(-1)[0],
-          category: category.toString(),
+          category: `素材,${category.toString()}`,
           tags: filtertags.toString(),
           coursewareIDs: !coursewares.length
             ? null

@@ -1,6 +1,18 @@
 import React, { Fragment } from 'react';
 import { connect } from 'dva';
-import { Form, Input, Button, Select, Icon, Radio, Modal, Tag, Cascader, message } from 'antd';
+import {
+  Form,
+  Input,
+  Button,
+  Select,
+  Icon,
+  Radio,
+  Modal,
+  Tag,
+  Cascader,
+  message,
+  Checkbox,
+} from 'antd';
 import CoursewareList from 'components/CoursewareTable';
 import { models } from 'enums/ResourceOptions';
 import { filterArraySpace, validateTagLength, uniqueArray } from 'utils/utils';
@@ -144,7 +156,7 @@ class VerifyMaterial extends React.PureComponent {
     const { coursewares } = this.state;
     validateFields((err, values) => {
       if (!err) {
-        const { title, tags, category, reason } = values;
+        const { title, tags, category, reason, format } = values;
         const filterTags = filterArraySpace(tags);
         const tagsLength = filterTags.length;
 
@@ -167,24 +179,17 @@ class VerifyMaterial extends React.PureComponent {
           return message.warn('标签不符合上传要求');
         }
 
-        Object.assign(
-          values,
-          {
-            title: title.trim(),
-          },
-          { tags: filterTags.toString(), category: category.toString() },
-          {
-            coursewareIDs: !coursewares.length
-              ? null
-              : coursewares.map(courseware => courseware.id).toString(),
-          },
-          {
-            type: 1,
-          },
-          {
-            id: pathname.split('/').slice(-1)[0],
-          }
-        );
+        Object.assign(values, {
+          title: title.trim(),
+          tags: filterTags.toString(),
+          category: `素材,${category.toString()}`,
+          format: format.toString(),
+          coursewareIDs: !coursewares.length
+            ? null
+            : coursewares.map(courseware => courseware.id).toString(),
+          type: 1,
+          id: pathname.split('/').slice(-1)[0],
+        });
 
         dispatch({
           type: 'material/update',
@@ -230,10 +235,12 @@ class VerifyMaterial extends React.PureComponent {
               initialValue: materialDetail ? materialDetail.format : null,
               rules: [{ required: true, message: '请选择格式' }],
             })(
-              <Radio.Group>
-                <Radio value="fbx">fbx</Radio>
-                <Radio value="abm">abm</Radio>
-              </Radio.Group>
+              <Checkbox.Group>
+                <Checkbox value="fbx">fbx</Checkbox>
+                <Checkbox value="abm">abm</Checkbox>
+                <Checkbox value="abmw">abmw</Checkbox>
+                <Checkbox value="abmp">abmp</Checkbox>
+              </Checkbox.Group>
             )}
           </Form.Item>
 

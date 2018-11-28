@@ -1,5 +1,6 @@
 import { message } from 'antd';
 import { upload as uploadResource, download as downloadModel } from 'utils/aliOSS';
+import { parseMaterialDetail } from 'utils/resourceParser';
 import {
   queryMaterials,
   addMaterial,
@@ -252,7 +253,7 @@ export default {
     },
 
     saveDetail(state, { payload }) {
-      return { ...state, detail: payload };
+      return { ...state, detail: parseMaterialDetail(payload) };
     },
   },
 };

@@ -8,6 +8,7 @@ import {
   Divider,
   Icon,
   Radio,
+  Checkbox,
   Modal,
   Tag,
   Cascader,
@@ -91,7 +92,7 @@ class Step2 extends React.PureComponent {
     const { coursewares } = this.state;
     validateFields((err, values) => {
       if (!err) {
-        const { title, tags, category } = values;
+        const { title, tags, category, format } = values;
         const filterTags = filterArraySpace(tags);
         const tagsLength = filterTags.length;
 
@@ -110,21 +111,16 @@ class Step2 extends React.PureComponent {
           return;
         }
 
-        Object.assign(
-          values,
-          {
-            title: title.trim(),
-          },
-          { tags: filterTags.toString(), category: category.toString() },
-          {
-            coursewareIDs: !coursewares.length
-              ? null
-              : coursewares.map(courseware => courseware.id).toString(),
-          },
-          {
-            type: 1,
-          }
-        );
+        Object.assign(values, {
+          title: title.trim(),
+          format: format.toString(),
+          tags: filterTags.toString(),
+          category: `素材,${category.toString()}`,
+          coursewareIDs: !coursewares.length
+            ? null
+            : coursewares.map(courseware => courseware.id).toString(),
+          type: 1,
+        });
 
         this.setState({
           loading: true,
@@ -180,10 +176,12 @@ class Step2 extends React.PureComponent {
             {getFieldDecorator('format', {
               rules: [{ required: true, message: '请选择格式' }],
             })(
-              <Radio.Group>
-                <Radio value="fbx">fbx</Radio>
-                <Radio value="abm">abm</Radio>
-              </Radio.Group>
+              <Checkbox.Group>
+                <Checkbox value="fbx">fbx</Checkbox>
+                <Checkbox value="abm">abm</Checkbox>
+                <Checkbox value="abmw">abmw</Checkbox>
+                <Checkbox value="abmp">abmp</Checkbox>
+              </Checkbox.Group>
             )}
           </Form.Item>
           <Form.Item {...formItemLayout} label="级别">
