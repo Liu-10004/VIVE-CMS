@@ -8,6 +8,7 @@ import {
   queryCoursewareDetail,
 } from 'services/api';
 import { upload as uploadResource } from 'utils/aliOSS';
+import { parseCoursewareDetail } from 'utils/resourceParser';
 
 export default {
   namespace: 'courseware',
@@ -144,7 +145,7 @@ export default {
     },
 
     saveDetail(state, { payload }) {
-      return { ...state, detail: payload };
+      return { ...state, detail: parseCoursewareDetail(payload) };
     },
   },
 };

@@ -69,7 +69,7 @@ export default class Step1 extends PureComponent {
         const courseware = {
           ...values,
           title: title.trim(),
-          category: category.toString(),
+          category: `课件,${category.toString()}`,
           tags: filtertags.toString(),
           label: label.trim(),
         };

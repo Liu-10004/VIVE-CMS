@@ -42,7 +42,7 @@ class CoursewareDetail extends React.Component {
         <div className={styles.content}>
           <RowItem label="课件名称" content={title} />
           <RowItem label="分类" content={category.join(' > ')} />
-          <RowItem label="年级 / 专业" content={label.join('，')} />
+          <RowItem label="年级 / 专业" content={label} />
           <RowItem label="合作单位" content={organization || '暂无'} />
           <RowItem
             label="标签"
@@ -65,7 +65,7 @@ class CoursewareDetail extends React.Component {
             ))}
           >
             <Modal
-              width={880}
+              width={908}
               visible={!!previewImage}
               footer={null}
               centered
