@@ -74,104 +74,14 @@ export const getRouterData = app => {
     '/': {
       component: dynamicWrapper(app, ['user', 'login'], () => import('../layouts/BasicLayout')),
     },
-    '/resources/mine': {
-      component: dynamicWrapper(app, ['statistic'], () => import('../routes/Resources/Overview')),
-    },
-    '/resources/mine/material/edit/:id': {
-      component: dynamicWrapper(app, ['material'], () =>
-        import('../routes/Resources/Edit/Material')
-      ),
-    },
-    '/resources/mine/material/:id': {
-      component: dynamicWrapper(app, ['material'], () =>
-        import('../routes/Resources/Details/Material')
-      ),
-    },
-    '/resources/mine/courseware/:id': {
-      component: dynamicWrapper(app, ['courseware'], () =>
-        import('../routes/Resources/Details/Courseware')
-      ),
-    },
-    '/resources/mine/:status/:type': {
-      component: dynamicWrapper(app, ['statistic', 'material', 'courseware'], () =>
+    '/schools/all': {
+      component: dynamicWrapper(app, ['statistic'], () =>
         import('../routes/Resources/Overview/Resources')
       ),
     },
-    '/resources/all': {
-      component: dynamicWrapper(app, ['statistic'], () => import('../routes/Resources/Overview')),
-    },
-    '/resources/all/material/verify/:id': {
-      component: dynamicWrapper(app, ['material'], () =>
+    '/schools/verify/:id': {
+      component: dynamicWrapper(app, ['courseware'], () =>
         import('../routes/Resources/VerifyMaterial')
-      ),
-    },
-    '/resources/all/material/edit/:id': {
-      component: dynamicWrapper(app, ['material'], () =>
-        import('../routes/Resources/Edit/Material')
-      ),
-    },
-    '/resources/all/material/:id': {
-      component: dynamicWrapper(app, ['material'], () =>
-        import('../routes/Resources/Details/Material')
-      ),
-    },
-    '/resources/all/courseware/:id': {
-      component: dynamicWrapper(app, ['courseware'], () =>
-        import('../routes/Resources/Details/Courseware')
-      ),
-    },
-    '/resources/all/:status/:type': {
-      component: dynamicWrapper(app, ['statistic', 'material', 'courseware'], () =>
-        import('../routes/Resources/Overview/Resources')
-      ),
-    },
-    '/resources/upload-courseware': {
-      component: dynamicWrapper(app, ['courseware'], () =>
-        import('../routes/Resources/UploadCourseware')
-      ),
-    },
-    '/resources/upload-courseware/step1': {
-      component: dynamicWrapper(app, ['courseware'], () =>
-        import('../routes/Resources/UploadCourseware/Step1')
-      ),
-    },
-    '/resources/upload-courseware/step2': {
-      component: dynamicWrapper(app, ['courseware'], () =>
-        import('../routes/Resources/UploadCourseware/Step2')
-      ),
-    },
-    '/resources/upload-model': {
-      component: dynamicWrapper(app, ['material'], () => import('../routes/Resources/UploadModel')),
-    },
-    '/resources/upload-model/step1': {
-      name: '上传模型和缩略图',
-      component: dynamicWrapper(app, ['material', 'courseware'], () =>
-        import('../routes/Resources/UploadModel/Step1')
-      ),
-    },
-    '/resources/upload-model/step2': {
-      name: '填写模型信息',
-      component: dynamicWrapper(app, ['material'], () =>
-        import('../routes/Resources/UploadModel/Step2')
-      ),
-    },
-    '/resources/upload-model/result': {
-      name: '上传成功，等待审核',
-      component: dynamicWrapper(app, ['material'], () =>
-        import('../routes/Resources/UploadModel/Step3')
-      ),
-    },
-    '/resources/upload-pano': {
-      component: dynamicWrapper(app, ['material'], () => import('../routes/Resources/UploadPano')),
-    },
-    '/resources/upload-pano/step1': {
-      component: dynamicWrapper(app, ['material'], () =>
-        import('../routes/Resources/UploadPano/Step1')
-      ),
-    },
-    '/resources/upload-pano/step2': {
-      component: dynamicWrapper(app, ['material'], () =>
-        import('../routes/Resources/UploadPano/Step2')
       ),
     },
     '/user': {

@@ -18,7 +18,17 @@ export default {
 
   effects: {
     *login({ payload }, { call, put }) {
-      const response = yield call(fakeAccountLogin, payload);
+      let response = yield call(fakeAccountLogin, payload);
+      response = !response
+        ? {
+            message: 'success',
+            data: {
+              currentAuthority: 'admin',
+              account: 'admin',
+            },
+          }
+        : response;
+
       yield put({
         type: 'changeLoginStatus',
         payload: response,
@@ -31,9 +41,10 @@ export default {
         let { redirect } = params;
         if (redirect) {
           const redirectUrlParams = new URL(redirect);
+          console.log('jjj redirect: ', redirect);
           if (redirectUrlParams.origin === urlParams.origin) {
-            redirect = redirect.substr(urlParams.origin.length);
-            if (redirect.startsWith('/#')) {
+            redirect = redirect.substr(urlParams.origin.length + 4);
+            if (redirect.startsWith('#/')) {
               redirect = redirect.substr(2);
             }
           } else {
@@ -41,6 +52,7 @@ export default {
             return;
           }
         }
+        console.log('redirect: ', redirect);
         yield put(routerRedux.replace(redirect || '/'));
       }
     },

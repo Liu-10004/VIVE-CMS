@@ -20,6 +20,7 @@ const codeMessage = {
   503: '服务不可用，服务器暂时过载或维护。',
   504: '网关超时。',
 };
+
 function checkStatus(response) {
   if (response.status >= 200 && response.status < 300) {
     return response;
@@ -35,6 +36,40 @@ function checkStatus(response) {
   error.response = response;
   throw error;
 }
+
+function streamReader(response) {
+  const reader = response.body.getReader();
+  const stream = new ReadableStream({
+    start(controller) {
+      // 下面的函数处理每个数据块
+      function push() {
+        // "done"是一个布尔型，"value"是一个Unit8Array
+        reader.read().then(({ done, value }) => {
+          // 判断是否还有可读的数据？
+          if (done) {
+            // 告诉浏览器已经结束数据发送。
+            controller.close();
+            return;
+          }
+
+          // 取得数据并将它通过controller发送给浏览器。
+          controller.enqueue(value);
+          push();
+        });
+      }
+
+      push();
+    },
+  });
+
+  return stream;
+}
+
+export const defaultConfig = {
+  method: 'GET',
+  baseUrl: 'http://www.jxvredu.com/courseware',
+  headers: null,
+};
 
 /**
  * Requests a URL, returning a promise.
@@ -69,13 +104,34 @@ export default function request(url, options) {
     }
   }
 
-  return fetch(url, newOptions)
+  return fetch(defaultConfig.baseUrl + url, newOptions)
     .then(checkStatus)
     .then(response => {
-      // if (newOptions.method === 'DELETE' || response.status === 204) {
-      //   return response.text();
-      // }
-      return response.json();
+      const contentType =
+        (response.headers.get('Content-type') &&
+          response.headers.get('Content-type').split(';')[0]) ||
+        'application/json';
+
+      if (contentType === 'application/octet-stream') {
+        return response.blob();
+      }
+
+      if (contentType === 'application/json') {
+        const token = response.headers.get('Authorization');
+        !token ? undefined : localStorage.setItem('token', token);
+
+        return Promise.resolve(response.json());
+      }
+    })
+    .then(data => {
+      if (data instanceof Blob) {
+        const reader = new FileReader();
+
+        reader.readAsDataURL(data);
+        return reader;
+      }
+
+      return data;
     })
     .catch(e => {
       const { dispatch } = store;

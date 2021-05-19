@@ -1,4 +1,3 @@
-import { queryResourceStatus } from '../services/api';
 import { status as ResourceStatus } from '../enums/ResourceStatus';
 
 export default {
@@ -12,21 +11,7 @@ export default {
   },
 
   effects: {
-    *fetchResourceStatus({ payload }, { call, put }) {
-      let response;
-      if (payload.role === 0) {
-        response = yield call(queryResourceStatus, payload);
-      } else {
-        response = yield call(queryResourceStatus);
-      }
-
-      if (response.message === 'success') {
-        yield put({
-          type: 'saveResourceStatus',
-          payload: response,
-        });
-      }
-    },
+    *fetchResourceStatus({ payload }, { call, put }) {},
   },
 
   reducers: {

@@ -1,55 +1,37 @@
 @import '~antd/lib/style/themes/default.less';
 
-.stepForm {
-  margin: 40px auto 0;
-  max-width: 500px;
-}
-
-.stepFormText {
-  margin-bottom: 24px;
-  :global {
-    .ant-form-item-label,
-    .ant-form-item-control {
-      line-height: 22px;
-    }
-  }
-}
-
-.result {
+.formPage {
+  width: 612px;
   margin: 0 auto;
-  max-width: 560px;
-  padding: 24px 0 8px;
-}
+  position: relative;
 
-.wrapper {
-  margin-top: 50px;
-}
-
-.thumbnails {
-  display: flex;
-}
-
-.thumbnail {
-  margin-right: 10px;
-  cursor: pointer;
-}
-
-.download {
-  display: flex;
-  margin-top: 30px;
-  margin-bottom: 50px;
-  margin-left: 50px;
-
-  .name {
-    padding: 5px 10px 0 10px;
-    background-color: #ccc;
-    margin-right: 20px;
+  .panel {
+    position: absolute;
+    right: 30px;
+    top: 30px;
+    color: red;
+    font-size: 16px;
+    font-weight: bold;
   }
+
+  .panel p {
+    font-size: 14px;
+    font-weight: normal;
+  }
+}
+
+.loading {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 20px;
 }
 
 .verify {
   display: flex;
-  margin-left: 50px;
+  justify-items: center;
+  justify-content: flex-end;
+  align-items: center;
 
   .fall {
     background-color: #f00;
@@ -58,7 +40,28 @@
     border: none;
   }
 
+  .content {
+    display: flex;
+    justify-items: center;
+    align-items: baseline;
+  }
+
   button {
     margin-top: 5px;
   }
+}
+
+.version {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+
+  button {
+    margin-left: 10px;
+    margin-bottom: 10px;
+  }
+}
+
+.tips {
+  color: red;
+  margin-right: 60px;
 }

@@ -10,7 +10,7 @@ export default {
   },
   externals: {
     '@antv/data-set': 'DataSet',
-    rollbar: 'rollbar',
+    // rollbar: 'rollbar',
   },
   alias: {
     assets: path.resolve(__dirname, 'src/assets/'),
@@ -32,6 +32,6 @@ export default {
     javascriptEnabled: true,
   },
   disableDynamicImport: true,
-  publicPath: '/',
+  publicPath: 'gms/',
   hash: true,
 };

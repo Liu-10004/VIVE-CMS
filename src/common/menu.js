@@ -2,65 +2,18 @@ import { isUrl } from '../utils/utils';
 
 const menuData = [
   {
-    name: '内容云素材管理',
+    name: 'VR 大赛报名管理',
     icon: 'table',
-    path: 'resources',
+    path: 'schools',
     children: [
       {
-        name: '全部素材',
+        name: '报名信息',
         path: 'all',
-        authority: 'admin',
       },
       {
         name: '审核',
-        path: 'all/material/verify/:id',
+        path: 'verify/:id',
         hideInMenu: true,
-      },
-      {
-        name: '修改',
-        path: 'all/material/edit/:id',
-        hideInMenu: true,
-      },
-      {
-        name: '素材详情',
-        path: 'all/material/:id',
-        hideInMenu: true,
-      },
-      {
-        name: '课件详情',
-        path: 'all/courseware/:id',
-        hideInMenu: true,
-      },
-      {
-        name: '我的素材',
-        path: 'mine',
-      },
-      {
-        name: '修改',
-        path: 'mine/material/edit/:id',
-        hideInMenu: true,
-      },
-      {
-        name: '素材详情',
-        path: 'mine/material/:id',
-        hideInMenu: true,
-      },
-      {
-        name: '课件详情',
-        path: 'mine/courseware/:id',
-        hideInMenu: true,
-      },
-      {
-        name: '上传课件',
-        path: 'upload-courseware',
-      },
-      {
-        name: '上传模型 / 场景',
-        path: 'upload-model',
-      },
-      {
-        name: '上传 VR 全景',
-        path: 'upload-pano',
       },
     ],
   },

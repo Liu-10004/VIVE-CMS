@@ -1,0 +1,90 @@
+.formCard {
+  width: 100%;
+  padding: 15px;
+  box-sizing: border-box;
+
+  .header {
+    width: 100%;
+    display: inline-block;
+
+    h2 {
+      display: inline;
+      font-size: 17px;
+      font-weight: 600;
+      color: rgba(50, 60, 71, 1);
+      line-height: 24px;
+    }
+
+    span {
+      height: 15px;
+      font-size: 12px;
+      font-weight: 600;
+      color: rgba(50, 60, 71, 1);
+      line-height: 15px;
+    }
+  }
+}
+
+.schoolCard,
+.memberCard {
+  padding-top: 10px;
+  padding-right: 28px;
+  padding-left: 10px;
+}
+
+.memberCard {
+  padding-bottom: 20px;
+  border-bottom: 2px dotted rgba(50, 60, 71, 0.5);
+}
+
+.memberCard:last-child {
+  border-bottom: none;
+  padding-bottom: 0;
+}
+
+.formItem {
+  width: 380px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 15px;
+
+  .row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 0;
+  }
+
+  .row + .row {
+    margin-left: 10px;
+  }
+
+  span {
+    font-weight: bold;
+  }
+
+  .changed {
+    color: red;
+  }
+}
+
+.input {
+  width: 265px;
+  height: 30px;
+  background: transparent;
+  border-radius: 5px;
+  padding-left: 5px;
+  box-sizing: border-box;
+  margin-left: 5px;
+  border: none;
+  outline: 0;
+
+  &.sm {
+    width: 109px;
+  }
+
+  &.error {
+    border: 1px solid rgba(221, 108, 115, 1);
+  }
+}

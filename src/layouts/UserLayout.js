@@ -9,7 +9,7 @@ import { getRoutes, getPageQuery, getQueryPath } from '../utils/utils';
 
 const copyright = (
   <Fragment>
-    Copyright <Icon type="copyright" /> 2018 威爱教育 IT 技术部
+    Copyright <Icon type="copyright" /> 2020 江西威爱教育 IT 技术部
   </Fragment>
 );
 
@@ -25,9 +25,9 @@ class UserLayout extends React.PureComponent {
   getPageTitle() {
     const { routerData, location } = this.props;
     const { pathname } = location;
-    let title = '内容云管理系统';
+    let title = 'VR 课件制作大赛报名管理系统';
     if (routerData[pathname] && routerData[pathname].name) {
-      title = `${routerData[pathname].name} - 内容云管理系统`;
+      title = `${routerData[pathname].name} - 课件制作大赛报名管理系统`;
     }
     return title;
   }

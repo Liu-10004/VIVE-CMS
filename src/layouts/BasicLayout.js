@@ -113,9 +113,9 @@ class BasicLayout extends React.PureComponent {
       });
     });
     const { dispatch } = this.props;
-    dispatch({
-      type: 'user/fetchCurrent',
-    });
+    // dispatch({
+    //   type: 'user/fetchCurrent',
+    // });
   }
 
   componentWillUnmount() {
@@ -125,7 +125,7 @@ class BasicLayout extends React.PureComponent {
   getPageTitle() {
     const { routerData, location } = this.props;
     const { pathname } = location;
-    let title = 'Ant Design Pro';
+    let title = 'VR 大赛报名管理';
     let currRouterData = null;
     // match params path
     Object.keys(routerData).forEach(key => {
@@ -134,7 +134,7 @@ class BasicLayout extends React.PureComponent {
       }
     });
     if (currRouterData && currRouterData.name) {
-      title = `${currRouterData.name} - Ant Design Pro`;
+      title = `${currRouterData.name} - VR 大赛报名管理`;
     }
     return title;
   }
@@ -152,9 +152,9 @@ class BasicLayout extends React.PureComponent {
     } else {
       const { routerData } = this.props;
       // get the first authorized route path in routerData
-      const authorizedPath = Object.keys(routerData).find(
-        item => check(routerData[item].authority, item) && item !== '/'
-      );
+      const authorizedPath = Object.keys(routerData).find(item => {
+        return check(routerData[item].authority, item) && item !== '/';
+      });
       return authorizedPath;
     }
     return redirect;
@@ -200,15 +200,7 @@ class BasicLayout extends React.PureComponent {
   };
 
   render() {
-    const {
-      currentUser,
-      collapsed,
-      fetchingNotices,
-      notices,
-      routerData,
-      match,
-      location,
-    } = this.props;
+    const { collapsed, fetchingNotices, notices, routerData, match, location } = this.props;
     const { isMobile: mb } = this.state;
     const baseRedirect = this.getBaseRedirect();
     const layout = (
@@ -229,7 +221,7 @@ class BasicLayout extends React.PureComponent {
           <Header style={{ padding: 0 }}>
             <GlobalHeader
               logo={logo}
-              currentUser={currentUser}
+              currentUser={{ name: 'Admin' }}
               fetchingNotices={fetchingNotices}
               notices={notices}
               collapsed={collapsed}
@@ -263,7 +255,7 @@ class BasicLayout extends React.PureComponent {
             <GlobalFooter
               copyright={
                 <Fragment>
-                  Copyright <Icon type="copyright" /> 2018 威爱教育 IT 技术部
+                  Copyright <Icon type="copyright" /> 2020 江西威爱教育 IT 技术部
                 </Fragment>
               }
             />

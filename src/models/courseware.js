@@ -1,18 +1,8 @@
-import { message } from 'antd';
-import {
-  addCourseware,
-  queryCoursewares,
-  updateCourseware,
-  deleteCourseware,
-  getToken,
-  queryCoursewareDetail,
-} from 'services/api';
-import { upload as uploadResource } from 'utils/aliOSS';
-import { parseCoursewareDetail } from 'utils/resourceParser';
+import { querySchools, updateSchools, querySchoolDetails, queryExcel } from 'services/api';
+import { formatDate } from 'utils/time';
 
 export default {
   namespace: 'courseware',
-
   state: {
     data: [],
     pages: {
@@ -20,105 +10,68 @@ export default {
       size: 20,
       number: 0,
     },
-    detail: null,
+    nextId: false,
+    details: [],
   },
 
   effects: {
-    *add({ payload }, { all, call }) {
-      const { thumbnails } = payload;
-      // eslint-disable-next-line no-param-reassign
-      delete payload.thumbnails;
-      let response = yield call(addCourseware, payload);
-
-      if (response.message === 'success') {
-        const coursewareId = response.data;
-
-        // 请求 ali-oss token
-        response = yield call(getToken, { tokenType: 2, id: coursewareId });
-
-        if (response.message === 'success') {
-          response = yield all(
-            thumbnails.fileList.map(file =>
-              call(uploadResource, { file: file.originFileObj, token: response.data })
-            )
-          );
-
-          if (response.every(item => item.message === 'success')) {
-            const params = {
-              ...payload,
-              id: coursewareId,
-              thumbnails: response.map(file => file.fileUrl).toString(),
-            };
-            return params;
-          }
-        }
-      } else {
-        message.error('上传失败，检查网络后再试！');
-      }
-    },
-
-    // 资源管理，fetch 数据
     *fetch({ payload }, { call, put }) {
-      const response = yield call(queryCoursewares, payload);
+      const response = yield call(querySchools, payload);
 
-      if (response.message === 'success') {
+      if (response) {
         yield put({
           type: 'save',
-          payload: response.data,
+          payload: response,
         });
         return response;
       }
     },
 
-    *update({ payload }, { call, put, select }) {
-      const response = yield call(updateCourseware, payload);
+    *export({}, { call }) {
+      const response = yield call(queryExcel);
 
-      // 下架
-      if (response.message === 'success') {
-        if (payload.status === 4) {
-          const courseware = yield select(state => state.courseware);
-          const { data: dataSource, pages } = courseware;
+      if (response) {
+        response.onload = function(e) {
+          const excelFile = document.createElement('a');
 
-          yield put({
-            type: 'save',
-            payload: {
-              ...pages,
-              totalElements: pages.totalElements - 1,
-              content: dataSource.filter(item => item.id !== payload.id),
-            },
-          });
-        }
+          excelFile.download = '报名信息统计表.xls';
+          excelFile.style.display = 'none';
+          excelFile.href = e.target.result;
+          document.body.appendChild(excelFile);
+          excelFile.click();
+          document.body.removeChild(excelFile);
+        };
       }
-      return response;
     },
 
-    *delete({ payload }, { call, put, select }) {
-      const response = yield call(deleteCourseware, payload);
+    *update({ payload }, { call }) {
+      return yield call(updateSchools, payload);
+    },
 
-      if (response.message === 'success') {
-        const courseware = yield select(state => state.courseware);
-        const { data: dataSource, pages } = courseware;
+    *fetchDetail({ payload }, { call, put, select }) {
+      const response = yield call(querySchoolDetails, payload);
+      const { data } = yield select(state => state.courseware);
+      let nextIndex = 0;
 
+      data.find((item, index) => {
+        if (item.userId === payload.userId) {
+          nextIndex = index + 1;
+
+          return true;
+        }
+
+        return false;
+      });
+
+      if (response) {
         yield put({
-          type: 'save',
+          type: 'saveDetails',
           payload: {
-            ...pages,
-            content: dataSource.filter(item => item.id !== payload.id),
+            details: response,
+            nextId: nextIndex <= data.length - 1 ? data[nextIndex].userId : false,
           },
         });
-      }
-
-      return response;
-    },
-
-    *fetchDetail({ payload }, { call, put }) {
-      const response = yield call(queryCoursewareDetail, payload);
-
-      if (response.message === 'success') {
-        yield put({
-          type: 'saveDetail',
-          payload: response.data,
-        });
+        return response;
       }
     },
   },
@@ -144,8 +97,8 @@ export default {
       };
     },
 
-    saveDetail(state, { payload }) {
-      return { ...state, detail: parseCoursewareDetail(payload) };
+    saveDetails(state, { payload }) {
+      return { ...state, details: payload.details, nextId: payload.nextId };
     },
   },
 };
